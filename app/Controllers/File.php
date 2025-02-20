@@ -15,6 +15,9 @@ class File extends Controller
 
     public function convert()
     {
+
+        $fileModel = new FileModel();
+
         $validation = Services::validation();
 
         $conversionConfig = config('FileConversion');
@@ -36,29 +39,48 @@ class File extends Controller
 
         $uniqueId = uniqid('file_', true);
 
-        $fileModel = new FileModel();
-        $filePath = $file->store(); // Save the file to the server
+        $filePath = $file->store();
 
-        // Insert the file record into the database
+        $uuid = service('uuid');
+        $uuid4 = $uuid->uuid4()->toString();
+
         $fileModel->insert([
-            // 'file_name' => $file->getName(),
+            'file_name' => $file->getName(),
             'file_path' => $filePath,
             'status' => 'pending', // Initial status
-            // 'queue_id' => null,
-            // 'original_mime_type' => $uploadedFileMimeType,
-            // 'converted_mime_type' => null,
+            'file_id' => $uuid4,  // Insert binary UUID into DB
         ]);
 
-        return $this->response->setJSON(['status' => 'success', 'message' => 'File uploaded successfully!', 'unique_id' => $uniqueId]);
+        return $this->response->setJSON(['status' => 'success', 'message' => 'File uploaded successfully!', 'unique_id' => $uuid4]);
     }
 
-    // Function to process the file in the queue (dummy example)
-    private function processFileInQueue($uniqueId)
+    public function status()
     {
-        // Here, you'd use a real queue system (e.g., Redis or RabbitMQ)
-        // This is a mock function simulating the processing of a file
+        $validation = Services::validation();
 
-        // Example: You would normally queue the file conversion job with its unique identifier
-        // Example: Queue job with unique ID and file path, which will be processed in the background.
+        $validation->setRules([
+            'files.*.id' => 'required|uuid',
+        ]);
+
+        if (!$validation->withRequest($this->request)->run()) {
+            return $this->response->setStatusCode(400)->setJSON(['status' => 'error', 'message' => 'Invalid file IDs.']);
+        }
+
+        $fileModel = new FileModel();
+
+        $fileIds = $this->request->getJSON(true)['files'];
+
+        $files = $fileModel->whereIn('file_id', $fileIds)->findAll();
+
+        $response = [];
+
+        foreach ($files as $file) {
+            $response[] = [
+                'id' => $file['file_id'],
+                'status' => $file['status'],
+            ];
+        }
+
+        return $this->response->setJSON($response);
     }
 }
