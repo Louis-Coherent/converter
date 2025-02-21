@@ -9,6 +9,8 @@ class FileModel extends UuidModel
 
     protected $uuidFields = ['file_id'];
 
+    protected $uuidUseBytes    = false;
+
     protected $table = 'files';
 
     protected $primaryKey = 'id';

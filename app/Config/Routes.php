@@ -8,5 +8,6 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'File::index');
 
 $routes->group('file', function ($routes) {
-    $routes->post('convert', 'File::convert');
+    $routes->post('upload', 'File::upload', ['filter' => 'ajax']);
+    $routes->post('status', 'File::status', ['filter' => 'ajax']);
 });

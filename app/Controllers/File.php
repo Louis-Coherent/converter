@@ -8,13 +8,24 @@ use Config\Services;
 
 class File extends Controller
 {
-    public function index()
+
+    private $session;
+
+    function __construct()
     {
-        return view('index');
+        $this->session = Services::session();
     }
 
-    public function convert()
+    public function index()
     {
+        $currentFiles = $this->session->get('files');
+
+        return view('index', ['files' => $currentFiles]);
+    }
+
+    public function upload()
+    {
+        $currentFiles = $this->session->get('files');
 
         $fileModel = new FileModel();
 
@@ -37,19 +48,29 @@ class File extends Controller
 
         $convert = $this->request->getPost('conversion_type');
 
-        $uniqueId = uniqid('file_', true);
-
         $filePath = $file->store();
 
         $uuid = service('uuid');
         $uuid4 = $uuid->uuid4()->toString();
 
         $fileModel->insert([
-            'file_name' => $file->getName(),
+            'file_name' => $file->getClientName(),
             'file_path' => $filePath,
             'status' => 'pending', // Initial status
             'file_id' => $uuid4,  // Insert binary UUID into DB
         ]);
+
+        $currentFiles[] = [
+            'id' => $uuid4,
+            'name' => $file->getClientName(),
+            'progress' => 0,
+            'selectedConversion' => $convert,
+            'isConverting' => false,
+            'errorMessage' => '',
+            'status' => 'pending',
+        ];
+
+        $this->session->set('files', $currentFiles);
 
         return $this->response->setJSON(['status' => 'success', 'message' => 'File uploaded successfully!', 'unique_id' => $uuid4]);
     }
@@ -59,7 +80,7 @@ class File extends Controller
         $validation = Services::validation();
 
         $validation->setRules([
-            'files.*.id' => 'required|uuid',
+            'files.*' => 'required',
         ]);
 
         if (!$validation->withRequest($this->request)->run()) {
@@ -75,6 +96,18 @@ class File extends Controller
         $response = [];
 
         foreach ($files as $file) {
+
+            //Update session file status
+            $currentFiles = $this->session->get('files');
+
+            foreach ($currentFiles as $key => $currentFile) {
+                if ($currentFile['id'] == $file['file_id']) {
+                    $currentFiles[$key]['status'] = $file['status'];
+                    $this->session->set('files', $currentFiles);
+                    break;
+                }
+            }
+
             $response[] = [
                 'id' => $file['file_id'],
                 'status' => $file['status'],
