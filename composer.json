@@ -13,7 +13,9 @@
         "php": "^8.1",
         "codeigniter4/framework": "^4.0",
         "codeigniter4/queue": "dev-develop",
-        "michalsn/codeigniter4-uuid": "^1.1"
+        "dompdf/dompdf": "^3.1",
+        "michalsn/codeigniter4-uuid": "^1.1",
+        "spatie/pdf-to-image": "^1.2"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9",

@@ -11,18 +11,36 @@ class FileConversion extends Config
 {
     /**
      * An array of file types with allowed conversion paths.
-     * Each key represents a "from" type, and the values are an array of allowed "to" types.
-     * This allows easy checking of valid conversion paths.
      */
-    public array $mimeTypes = [
-        'application/pdf' => ['application/msword', 'image/jpeg', 'image/png', 'text/plain'],
-        'application/msword' => ['application/pdf', 'text/plain', 'text/html'],
-        'text/plain' => ['application/pdf', 'application/msword', 'text/html', 'text/csv'],
-        'text/html' => ['application/pdf', 'application/msword', 'text/plain', 'text/csv'],
-        'text/csv' => ['text/plain', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/pdf'],
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => ['text/csv', 'application/pdf', 'text/plain'],
-        'image/jpeg' => ['application/pdf', 'image/png'],
-        'image/png' => ['application/pdf', 'image/jpeg'],
-        // Add more MIME types and conversion paths as needed
+    public const mimeTypes = [
+        'application/pdf' => ['jpg', 'jpeg', 'png', 'webp'],
+        'text/html' => ['pdf'],
+        'text/plain' => ['pdf'],
+        'image/jpeg'  => ['jpeg', 'jpg', 'png', 'webp', 'bmp', 'gif', 'tiff', 'pdf'],
+        'image/png'   => ['jpeg', 'jpg', 'png', 'webp', 'bmp', 'gif', 'tiff', 'pdf'],
+        'image/gif'   => ['jpeg', 'jpg', 'png', 'webp', 'bmp', 'tiff', 'pdf'],
+        'image/bmp'   => ['jpeg', 'jpg', 'png', 'webp', 'gif', 'tiff', 'pdf'],
+        'image/webp'  => ['jpeg', 'jpg', 'png', 'gif', 'bmp', 'tiff', 'pdf'],
+        'image/tiff'  => ['jpeg', 'jpg', 'png', 'webp', 'gif', 'bmp', 'pdf'],
+        'image/svg+xml' => ['pdf', 'png', 'jpeg', 'jpg'],
+        'image/vnd.microsoft.icon' => ['png', 'jpeg', 'jpg', 'gif', 'bmp'],
+        'image/vnd.adobe.photoshop' => ['jpeg', 'jpg', 'png', 'webp', 'tiff', 'pdf'],
     ];
+
+    public const PENDING = 'pending';
+    public const UPLOADED = 'uploaded';
+    public const QUEUED = 'queued';
+    public const PROCESSING = 'processing';
+    public const COMPLETE = 'complete';
+    public const FAILED = 'failed';
+
+    public static function all(): array
+    {
+        return [
+            self::PENDING,
+            self::IN_PROGRESS,
+            self::COMPLETE,
+            self::FAILED,
+        ];
+    }
 }

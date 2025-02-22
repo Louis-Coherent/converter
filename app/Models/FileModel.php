@@ -15,7 +15,12 @@ class FileModel extends UuidModel
 
     protected $primaryKey = 'id';
 
-    protected $allowedFields = ['file_id', 'file_name', 'file_path', 'status'];
+    protected $allowedFields = ['file_id', 'file_name', 'og_file_name', 'file_path', 'format_from', 'format_to', 'converted_file_path', 'error_message', 'status'];
 
     protected $useTimestamps = true;
+
+    public function findUuid(string $uuid)
+    {
+        return $this->where('file_id', $uuid)->first();
+    }
 }

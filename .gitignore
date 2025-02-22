@@ -60,10 +60,15 @@ writable/session/*
 writable/uploads/*
 !writable/uploads/index.html
 
+writable/converted-files/*
+!writable/converted-files/index.html
+
 writable/debugbar/*
 !writable/debugbar/.gitkeep
 
 php_errors.log
+
+node_modules
 
 #-------------------------
 # User Guide Temp Files
