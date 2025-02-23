@@ -53,7 +53,8 @@ writable/cache/*
 
 writable/logs/*
 !writable/logs/index.html
-!writable/logs/unsupported-conversions/
+!writable/logs/unsupported-conversions
+writable/logs/unsupported-conversions/*
 !writable/logs/unsupported-conversions/index.html
 
 
