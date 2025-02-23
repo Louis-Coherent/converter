@@ -15,7 +15,7 @@ class FileModel extends UuidModel
 
     protected $primaryKey = 'id';
 
-    protected $allowedFields = ['file_id', 'file_name', 'og_file_name', 'file_path', 'format_from', 'format_to', 'converted_file_path', 'error_message', 'status'];
+    protected $allowedFields = ['ip', 'file_id', 'file_name', 'og_file_name', 'file_path', 'format_from', 'format_to', 'converted_file_path', 'error_message', 'status'];
 
     protected $useTimestamps = true;
 

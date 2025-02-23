@@ -2,17 +2,18 @@
 
 <?= $this->section('content') ?>
 
-<div x-data="alertHandler()" x-init="init()" class="fixed bottom-0 right-0 p-6 space-y-4 z-50">
-    <!-- Alerts will go here -->
+<!-- Alerts Section -->
+<div x-data="alertHandler()" x-init="init()" class="fixed bottom-0 right-0 p-4 md:p-6 space-y-4 z-50">
     <template x-for="alert in alerts" :key="alert.id">
         <div :class="alertClasses(alert)" class="bg-blue-500 text-white p-4 rounded-lg shadow-lg relative opacity-75">
             <div class="flex justify-between items-center">
                 <span class="px-2" x-text="alert.message"></span>
-                <button @click="dismissAlert(alert.id)" class="text-white hover:text-gray-300"><i
-                        class="fa-solid fa-xmark"></i></button>
+                <button @click="dismissAlert(alert.id)" class="text-white hover:text-gray-300">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
             </div>
-            <div class="w-full h-1 bg-blue-300 mt-2">
-                <div class="h-full bg-blue-700" :style="`width: ${alert.progress}%`"></div>
+            <div class="w-full h-1 bg-gray-500 opacity-20 mt-2">
+                <div class="h-full bg-gray-800 opacity-80" :style="`width: ${alert.progress}%`"></div>
             </div>
         </div>
     </template>
@@ -29,82 +30,164 @@
 
     <template x-if="selectedFiles.length > 0">
         <div class="mt-4">
-            <table class="w-full border-collapse border border-gray-200">
-                <thead class="bg-gray-100">
-                    <tr>
-                        <th class="p-3 text-left">File Name</th>
-                        <th class="p-3 text-left">Conversion</th>
-                        <th class="p-3 text-left">Status</th>
-                        <th class="p-3 text-left">Progress</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <template x-for="(file, index) in selectedFiles" :key="index">
-                        <tr class="border-b">
-                            <td class="p-3" x-text="file.name"></td>
-                            <td class="p-3">
-                                <template x-if="file.allowedConversions.length > 0">
-                                    <select x-model="file.selectedConversion" class="w-full p-2 border rounded">
-                                        <template x-for="conversion in file.allowedConversions">
-                                            <option :value="conversion" x-text="conversion"></option>
-                                        </template>
-                                    </select>
-                                </template>
-                                <template x-if="file.allowedConversions.length === 0">
-                                    <span class="text-red-500">Unsupported</span>
-                                </template>
-                            </td>
-
-
-                            <td class="p-3">
-                                <span class="font-medium px-2 py-1 rounded-md" :class="{
-                                    'bg-yellow-100 text-yellow-600': file.status === 'pending',
-                                    'bg-blue-100 text-blue-600': file.status === 'uploaded' ||file.status === 'queued' || file.status === 'processing',
-                                    'bg-green-100 text-green-600': file.status === 'complete',
-                                    'bg-red-100 text-red-600': file.status === 'failed'
-                                }" x-text="file.status">
-                                </span>
-                                <div class="text-red-500 text-sm" x-show="file.errorMessage" x-text="file.errorMessage">
-                                </div>
-                            </td>
-
-                            <td class="p-3">
-                                <template x-if="file.status !== 'complete' && file.status !== 'failed'">
-                                    <div class="relative w-full h-4 bg-gray-300 rounded overflow-hidden">
-                                        <div class="absolute top-0 left-0 h-full transition-all duration-500 ease-in-out"
-                                            :class="{
-                                                'bg-blue-500 animate-pulse': file.progress > 0 && file.progress < 100,
-                                                'bg-blue-500': file.progress === 100
-                                            }" :style="'width: ' + file.progress + '%'">
-                                        </div>
-                                    </div>
-                                </template>
-                                <template x-if="file.status === 'complete'">
-                                    <a :href="'/file/download/' + file.id" class="text-blue-500 underline">Download</a>
-                                </template>
-
-                            </td>
-                            <td>
-                                <template x-if="file.status === 'complete' || file.status === 'failed'">
-                                    <i @click="handleRemove(file)" class="fa-solid fa-xmark hover:opacity-50"></i>
-                                </template>
-                            </td>
-
-
+            <div class="hidden md:block">
+                <!-- Table for larger screens -->
+                <table class="w-full border-collapse border border-gray-200">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="p-3 text-left">File Name</th>
+                            <th class="p-3 text-left">Conversion</th>
+                            <th class="p-3 text-left">Status</th>
+                            <th class="p-3 text-left">Progress</th>
+                            <th></th>
                         </tr>
-                    </template>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <template x-for="(file, index) in selectedFiles" :key="index">
+                            <tr class="border-b">
+                                <td class="p-3" x-bind:title="file.name" x-text="truncate(file.name, 20)"></td>
+                                <td class="p-3">
+                                    <template x-if="file.allowedConversions.length > 0 && file.status === 'pending'">
+                                        <select x-model="file.selectedConversion" class="w-full p-2 border rounded">
+                                            <template x-for="conversion in file.allowedConversions">
+                                                <option :value="conversion" x-text="conversion"></option>
+                                            </template>
+                                        </select>
+                                    </template>
+
+                                    <template x-if="file.allowedConversions.length === 0">
+                                        <span class="text-red-500">Unsupported</span>
+                                    </template>
+
+                                    <template x-if="file.status !== 'pending'">
+                                        <span x-text="file.selectedConversion"></span>
+                                    </template>
+                                </td>
+
+                                <td class="p-3">
+                                    <span class="font-medium px-2 py-1 rounded-md" :class="{
+                                        'bg-yellow-100 text-yellow-600': file.status === 'pending',
+                                        'bg-blue-100 text-blue-600': file.status === 'uploaded' ||file.status === 'queued' || file.status === 'processing',
+                                        'bg-green-100 text-green-600': file.status === 'complete',
+                                        'bg-red-100 text-red-600': file.status === 'failed'
+                                    }" x-text="file.status">
+                                    </span>
+                                </td>
+
+                                <td class="p-3">
+                                    <template x-if="file.status !== 'complete' && file.status !== 'failed'">
+                                        <div class="relative w-full h-4 bg-gray-300 rounded overflow-hidden">
+                                            <div class="absolute top-0 left-0 h-full transition-all duration-500 ease-in-out"
+                                                :class="{
+                                                    'bg-blue-500 animate-pulse': file.progress > 0 && file.progress < 100,
+                                                    'bg-blue-500': file.progress === 100
+                                                }" :style="'width: ' + file.progress + '%'">
+                                            </div>
+                                        </div>
+                                    </template>
+                                    <template x-if="file.status === 'complete'">
+                                        <a :href="'/file/download/' + file.id"
+                                            class="text-blue-500 underline">Download</a>
+                                    </template>
+                                </td>
+                                <td>
+                                    <template
+                                        x-if="file.status === 'complete' || file.status === 'failed' || file.status === 'pending'">
+                                        <i @click="handleRemove(file)" class="fa-solid fa-xmark hover:opacity-50"></i>
+                                    </template>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Stacked layout for mobile -->
+            <div class="md:hidden">
+                <template x-for="(file, index) in selectedFiles" :key="index">
+                    <div class="border-b p-4">
+                        <div class="flex justify-between">
+                            <span class="font-semibold">File Name:</span>
+                            <span x-bind:title="file.name" x-text="truncate(file.name, 20)"></span>
+                        </div>
+
+                        <div class="flex justify-between mt-2">
+                            <span class="font-semibold">Conversion:</span>
+                            <template x-if="file.allowedConversions.length > 0 && file.status === 'pending'">
+                                <select x-model="file.selectedConversion" class="w-full p-2 border rounded">
+                                    <template x-for="conversion in file.allowedConversions">
+                                        <option :value="conversion" x-text="conversion"></option>
+                                    </template>
+                                </select>
+                            </template>
+                            <template x-if="file.allowedConversions.length === 0">
+                                <span class="text-red-500">Unsupported</span>
+                            </template>
+                            <template x-if="file.status !== 'pending'">
+                                <span x-text="file.selectedConversion"></span>
+                            </template>
+                        </div>
+
+                        <div class="flex justify-between mt-2">
+                            <span class="font-semibold">Status:</span>
+                            <span class="font-medium px-2 py-1 rounded-md" :class="{
+                                'bg-yellow-100 text-yellow-600': file.status === 'pending',
+                                'bg-blue-100 text-blue-600': file.status === 'uploaded' ||file.status === 'queued' || file.status === 'processing',
+                                'bg-green-100 text-green-600': file.status === 'complete',
+                                'bg-red-100 text-red-600': file.status === 'failed'
+                            }" x-text="file.status"></span>
+                        </div>
+
+                        <div class="mt-2">
+                            <template x-if="file.status !== 'complete' && file.status !== 'failed'">
+                                <div class="relative w-full h-4 bg-gray-300 rounded overflow-hidden">
+                                    <div class="absolute top-0 left-0 h-full transition-all duration-500 ease-in-out"
+                                        :class="{
+                                            'bg-blue-500 animate-pulse': file.progress > 0 && file.progress < 100,
+                                            'bg-blue-500': file.progress === 100
+                                        }" :style="'width: ' + file.progress + '%'">
+                                    </div>
+                                </div>
+                            </template>
+                            <template x-if="file.status === 'complete'">
+                                <a :href="'/file/download/' + file.id" class="text-blue-500 underline">Download</a>
+                            </template>
+                        </div>
+
+                        <div class="mt-4">
+                            <template
+                                x-if="file.status === 'complete' || file.status === 'failed' || file.status === 'pending'">
+                                <i @click="handleRemove(file)" class="fa-solid fa-xmark hover:opacity-50"></i>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+            </div>
         </div>
     </template>
 
-    <button @click="handleFileConvert"
-        class="bg-blue-500 text-white px-6 py-2 rounded mt-4 hover:bg-blue-600 transition"
-        x-show="selectedFiles.length > 0">
-        Convert Files
-    </button>
+    <div class="flex justify-between mt-4">
+        <button @click="handleFileConvert"
+            class="bg-blue-500 text-white px-6 py-2 rounded mt-4 hover:bg-blue-600 transition relative"
+            x-show="selectedFiles.length > 0 && selectedFiles.some(file => file.id === null)">
+            <span x-show="!isConverting">Convert Files</span>
+            <span x-show="isConverting" class="absolute inset-0 flex items-center justify-center">
+                <svg class="w-5 h-5 text-white animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" class="opacity-25"></circle>
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"
+                        d="M4 12a8 8 0 0116 0a8 8 0 01-16 0z"></path>
+                </svg>
+            </span>
+        </button>
+
+        <button @click="removeFiles(selectedFiles)"
+            class="bg-red-500 text-white px-6 py-2 rounded mt-4 hover:bg-red-600 transition"
+            x-show="selectedFiles.length > 0">
+            Remove All</button>
+    </div>
 </div>
+
 
 <script>
 function alertHandler() {
@@ -112,6 +195,10 @@ function alertHandler() {
         alerts: [],
         alertId: 0,
         init() {
+
+            document.addEventListener('alert', (event) => {
+                this.showAlert(event.detail.message, event.detail.type);
+            });
             // Check for session alert
             const alertMessage =
                 '<?= json_encode(session()->getFlashdata("alert")) ?>'; // Adjust based on your framework's session flashdata
@@ -129,9 +216,6 @@ function alertHandler() {
                 progress: 0
             });
 
-            console.log(this.alerts);
-
-            // Start a progress bar animation
             let progress = 0;
             const interval = setInterval(() => {
                 progress += 1;
@@ -142,7 +226,7 @@ function alertHandler() {
                         this.dismissAlert(id);
                     }, 30); // Wait a little before dismissing
                 }
-            }, 10); // Control speed of progress bar
+            }, 30); // Control speed of progress bar
 
         },
         dismissAlert(id) {
@@ -156,12 +240,13 @@ function alertHandler() {
         },
         alertClasses(alert) {
             return {
-                'bg-green-500': alert.type = ('success'),
-                'bg-red-500': alert.type = ('error'),
-                'bg-yellow-500': alert.type = ('warning'),
-                'bg-blue-500': alert.type = ('info'),
+                'bg-green-500': alert.type === 'success',
+                'bg-red-500': alert.type === 'error',
+                'bg-yellow-500': alert.type === 'warning',
+                'bg-blue-500': alert.type === 'info',
             };
         }
+
     };
 }
 </script>
@@ -171,10 +256,10 @@ function fileUpload() {
     return {
         selectedFiles: <?= json_encode($files ?? []) ?? [] ?>,
         pollingInterval: null,
-        async handleFileSelect(event) {
-            this.selectedFiles = []; // Clear existing files first
+        isConverting: false, // Track conversion state
 
-            this.selectedFiles = Array.from(event.target.files).map(file => ({
+        async handleFileSelect(event) {
+            const newFiles = Array.from(event.target.files).map(file => ({
                 file: file,
                 id: null,
                 name: file.name,
@@ -186,10 +271,17 @@ function fileUpload() {
                 status: 'pending',
                 allowedConversions: []
             }));
+
+            this.selectedFiles = [...this.selectedFiles, ...newFiles]; // Merge new files with the existing ones
             await this.updateAllowedConversions();
         },
+        truncate(string, n) {
+            return string.substr(0, n - 1) + (string.length > n ? '...' : '');
+        },
         async updateAllowedConversions() {
-            const mimeTypes = [...new Set(this.selectedFiles.map(f => f.mimeType))];
+            // Filter files where id is null
+            const mimeTypes = [...new Set(this.selectedFiles.filter(f => f.id === null).map(f => f.mimeType))];
+
             try {
                 const response = await fetch('/file/allowed-conversions', {
                     method: 'POST',
@@ -200,28 +292,93 @@ function fileUpload() {
                         mime_types: mimeTypes
                     })
                 });
+
                 if (response.ok) {
                     const data = await response.json();
                     this.selectedFiles.forEach(file => {
-                        file.allowedConversions = data[file.mimeType] || [];
-                        if (file.allowedConversions.length > 0) {
-                            file.selectedConversion = file.allowedConversions[
-                                0]; // Set default conversion type
+                        if (file.id === null) {
+                            // Update allowed conversions only for files where id is null
+                            file.allowedConversions = data[file.mimeType] || [];
+                            if (file.allowedConversions.length > 0) {
+                                file.selectedConversion = file.allowedConversions[
+                                    0]; // Set default conversion type
+                            }
                         }
                     });
                 }
             } catch (error) {
-                console.error('Error fetching allowed conversions:', error);
+                document.dispatchEvent(new CustomEvent('alert', {
+                    detail: {
+                        message: 'Error fetching allowed conversions',
+                        type: 'error'
+                    }
+                }));
             }
+
         },
         async handleFileConvert() {
+            this.isConverting = true;
             const uploadPromises = this.selectedFiles.map(fileObj => this.uploadFile(fileObj));
             await Promise.all(uploadPromises);
+            this.isConverting = false;
+
             this.pollStatuses();
         },
         async handleRemove(file) {
-            console.log(file)
+            this.removeFiles([file])
         },
+        async removeFiles(files) {
+            // Handle if files is a single file (not an array)
+            if (!Array.isArray(files)) {
+                files = [files];
+            }
+
+            // Remove files with id === null directly from selectedFiles
+            this.selectedFiles = this.selectedFiles.filter(file => !files.some(f => f.id === null && f === file));
+
+            // Filter out files with id === null from the passed files
+            const filesToRemove = files.filter(file => file.id !== null);
+            const fileIds = filesToRemove.map(file => file.id);
+
+            if (fileIds.length === 0) {
+                return; // No files to remove via API, early return
+            }
+
+            const response = await fetch('/file/remove', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    files: fileIds
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                // Remove files from selectedFiles if their id is found in the response
+                this.selectedFiles = this.selectedFiles.filter(
+                    file => !data.files.some(status => status.id === file.id)
+                );
+
+                document.dispatchEvent(new CustomEvent('alert', {
+                    detail: {
+                        message: 'Files removed successfully!',
+                        type: 'success'
+                    }
+                }));
+                return;
+            }
+
+            document.dispatchEvent(new CustomEvent('alert', {
+                detail: {
+                    message: data.message,
+                    type: 'error'
+                }
+            }));
+        },
+
         async uploadFile(fileObj) {
             if (!fileObj.selectedConversion || fileObj.id != null) return;
             const formData = new FormData();
@@ -238,10 +395,24 @@ function fileUpload() {
                     fileObj.status = 'uploaded';
                     fileObj.progress = 10;
                     fileObj.isConverting = true;
+
+                    document.dispatchEvent(new CustomEvent('alert', {
+                        detail: {
+                            message: 'File uploaded successfully!',
+                            type: 'success'
+                        }
+                    }));
                 } else {
-                    fileObj.errorMessage = 'Upload failed';
+                    const data = await response.json();
+
+                    document.dispatchEvent(new CustomEvent('alert', {
+                        detail: {
+                            message: data.message,
+                            type: 'error'
+                        }
+                    }));
                     fileObj.file = null
-                    fileObj.status = 'error';
+                    fileObj.status = 'failed';
                 }
             } catch (error) {
                 fileObj.errorMessage = 'Error during upload';
@@ -291,7 +462,7 @@ function fileUpload() {
             }
         },
         init() {
-            console.log(this.selectedFiles)
+            this.pollStatuses();
         }
     };
 }

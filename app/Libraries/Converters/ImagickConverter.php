@@ -18,6 +18,9 @@ class ImagickConverter implements ConverterInterface
             'image/svg+xml' => ['pdf', 'png', 'jpeg', 'jpg'],
             'image/vnd.microsoft.icon' => ['png', 'jpeg', 'jpg', 'gif', 'bmp'],
             'image/vnd.adobe.photoshop' => ['jpeg', 'jpg', 'png', 'webp', 'tiff', 'pdf'],
+            'application/vnd.ms-excel' => ['csv', 'xls', 'xlsx'],
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => ['csv', 'xls'],
+            'text/csv' => ['xlsx', 'xls'],
         ];
     }
 

@@ -42,8 +42,52 @@ class File extends Controller
         return $this->response->setJSON($response);
     }
 
+    public function remove()
+    {
+        $validation = Services::validation();
+
+        $validation->setRules([
+            'files.*' => 'required',
+        ]);
+
+        if (!$validation->withRequest($this->request)->run()) {
+            return $this->response->setStatusCode(400)->setJSON(['status' => 'error', 'message' => 'Failed to remove: Invalid files.']);
+        }
+
+        $files = $this->request->getJsonVar('files');
+
+        $currentFiles = $this->session->get('files');
+
+        $removedFiles = [];
+        foreach ($files as $file) {
+            $fileModel = new FileModel();
+            $fileModel->delete(['id' => $file]);
+
+            // Use a new array instead of modifying the current one by reference
+            $currentFiles = array_filter($currentFiles, function ($currentFile) use ($file, &$removedFiles) {
+                if ($currentFile['id'] == $file) {
+                    $removedFiles[] = $currentFile; // Track the removed file
+                    return false; // This will remove the file from the currentFiles
+                }
+                return true; // Keep the file in the currentFiles
+            });
+        }
+
+        // Optionally reindex the array after the filter
+        $currentFiles = array_values($currentFiles);
+
+        $this->session->set('files', $currentFiles);
+
+        return $this->response->setJSON(['status' => 'success', 'message' => 'File removed successfully!', 'files' => $removedFiles]);
+    }
+
     public function upload()
     {
+
+        // if ($this->checkUserConversions()) {
+        //     return $this->response->setStatusCode(400)->setJSON(['status' => 'maxedconversions', 'message' => 'You have reached the maximum number of conversions for today.']);
+        // }
+
         $currentFiles = $this->session->get('files');
 
         $fileModel = new FileModel();
@@ -78,6 +122,7 @@ class File extends Controller
         $fileModel->insert([
             'og_file_name' => $file->getClientName(),
             'file_name' => $fileName,
+            'ip' => $this->request->getIPAddress(),
             'format_from' => $uploadedFileMimeType,
             'format_to' => $convertFileType,
             'file_path' => $filePath,
@@ -102,6 +147,22 @@ class File extends Controller
 
         return $this->response->setJSON(['status' => 'success', 'message' => 'File uploaded successfully!', 'unique_id' => $uuid4]);
     }
+
+    private function checkUserConversions()
+    {
+        $ipAddress = $this->request->getIPAddress();
+        $fileModel = new FileModel();
+
+        $todayDate = date('Y-m-d');
+
+        $userFiles = $fileModel->selectCount('id')
+            ->where('ip', $ipAddress)  // Filter by user IP address
+            ->where("DATE(created_at)", $todayDate)  // Filter by today's date (ignores the time)
+            ->first();
+
+        return $userFiles['id'] >= 5;
+    }
+
 
     public function downloadSingle($fileId)
     {

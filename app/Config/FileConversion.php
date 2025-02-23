@@ -25,7 +25,12 @@ class FileConversion extends Config
         'image/svg+xml' => ['pdf', 'png', 'jpeg', 'jpg'],
         'image/vnd.microsoft.icon' => ['png', 'jpeg', 'jpg', 'gif', 'bmp'],
         'image/vnd.adobe.photoshop' => ['jpeg', 'jpg', 'png', 'webp', 'tiff', 'pdf'],
+        'application/vnd.ms-excel' => ['csv', 'xls', 'xlsx', 'ods'],
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => ['csv', 'xls', 'ods'],
+        'text/csv' => ['xlsx', 'xls', 'ods'],
+        'application/vnd.oasis.opendocument.spreadsheet' => ['xlsx', 'xls', 'csv'],
     ];
+
 
     public const PENDING = 'pending';
     public const UPLOADED = 'uploaded';

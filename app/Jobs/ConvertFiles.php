@@ -16,20 +16,27 @@ class ConvertFiles extends BaseJob implements JobInterface
 
         $fileModel = new FileModel();
 
-        $fileModel->update($this->data['id'], ['status' => FileConversion::PROCESSING]);
-
-
-        $from = $this->data['from'];
-        $to = $this->data['to'];
-        $filePath = $this->data['filePath'];
-
-        $response = $converter->convert($from, $to, $filePath);
-
-        if ($response['status'] === 'error') {
-            $fileModel->update($this->data['id'], ['status' => FileConversion::FAILED, 'error_message' => $response['error_message']]);
+        if (!$fileModel->find($this->data['id'])) {
             return;
         }
 
-        $fileModel->update($this->data['id'], ['status' => FileConversion::COMPLETE, 'converted_file_path' => $response['file']]);
+        try {
+            $fileModel->update($this->data['id'], ['status' => FileConversion::PROCESSING]);
+
+            $from = $this->data['from'];
+            $to = $this->data['to'];
+            $filePath = $this->data['filePath'];
+
+            $response = $converter->convert($from, $to, $filePath);
+
+            if ($response['status'] === 'error') {
+                $fileModel->update($this->data['id'], ['status' => FileConversion::FAILED, 'error_message' => $response['error_message']]);
+                return;
+            }
+
+            $fileModel->update($this->data['id'], ['status' => FileConversion::COMPLETE, 'converted_file_path' => $response['file']]);
+        } catch (\Exception $e) {
+            $fileModel->update($this->data['id'], ['status' => FileConversion::FAILED, 'error_message' => $e->getMessage()]);
+        }
     }
 }
