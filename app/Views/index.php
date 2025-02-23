@@ -32,7 +32,6 @@
     <template x-if="selectedFiles.length > 0">
         <div class="mt-4">
             <div class="hidden md:block">
-                <!-- Table for larger screens -->
                 <table class="w-full border-collapse border border-gray-200">
                     <thead class="bg-gray-100">
                         <tr>
@@ -46,22 +45,14 @@
                     <tbody>
                         <template x-for="(file, index) in selectedFiles" :key="index">
                             <tr class="border-b">
-                                <!-- File Name -->
                                 <td class="p-3" x-bind:title="file.name" x-text="truncate(file.name, 20)"></td>
-
-                                <!-- File Conversions -->
                                 <td class="p-3">
                                     <template x-if="file.allowedConversions.length > 0 && file.status === 'pending'">
                                         <div x-data="{ dropdownOpen: false }">
-                                            <!-- Pass file into x-data -->
-                                            <!-- Each row gets its own open state -->
-                                            <!-- Toggle the dropdown open/close and reset conversion when opened -->
                                             <button @click="dropdownOpen = !dropdownOpen; file.selectedConversion = ''"
                                                 class="w-full p-2 border rounded bg-gray-100 text-gray-700 text-left">
                                                 <span x-text="file.selectedConversion || 'Select conversion'"></span>
                                             </button>
-
-                                            <!-- Dropdown list -->
                                             <div x-show="dropdownOpen" @click.away="dropdownOpen = false"
                                                 class="absolute mt-2 bg-white shadow-lg border rounded-md z-50">
                                                 <div class="p-2 max-h-64 overflow-y-auto">
@@ -98,8 +89,6 @@
                                         </div>
                                     </template>
                                 </td>
-
-                                <!-- File Status -->
                                 <td class="p-3">
                                     <span class="font-medium px-2 py-1 rounded-md" :class="{
                                         'bg-yellow-100 text-yellow-600': file.status === 'pending',
@@ -109,8 +98,6 @@
                                     }" x-text="file.status">
                                     </span>
                                 </td>
-
-                                <!-- File Progress -->
                                 <td class="p-3">
                                     <template
                                         x-if="file.status !== 'complete' && file.status !== 'failed' && file.status !== 'pending'">
@@ -163,7 +150,6 @@
                 </table>
             </div>
 
-            <!-- Stacked layout for mobile -->
             <div class="md:hidden">
                 <template x-for="(file, index) in selectedFiles" :key="index">
                     <div class="border-b p-4">
@@ -176,15 +162,10 @@
                             <span class="font-semibold">Conversion:</span>
                             <template x-if="file.allowedConversions.length > 0 && file.status === 'pending'">
                                 <div x-data="{ dropdownOpen: false }">
-                                    <!-- Pass file into x-data -->
-                                    <!-- Each row gets its own open state -->
-                                    <!-- Toggle the dropdown open/close and reset conversion when opened -->
                                     <button @click="dropdownOpen = !dropdownOpen; file.selectedConversion = ''"
                                         class="w-full p-2 border rounded bg-gray-100 text-gray-700 text-left">
                                         <span x-text="file.selectedConversion || 'Select conversion'"></span>
                                     </button>
-
-                                    <!-- Dropdown list -->
                                     <div x-show="dropdownOpen" @click.away="dropdownOpen = false"
                                         class="absolute mt-2 bg-white shadow-lg border rounded-md z-50 right-10">
                                         <div class="p-2 max-h-64 overflow-y-auto">

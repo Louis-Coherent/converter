@@ -6,6 +6,8 @@ use CodeIgniter\Controller;
 use App\Models\FileModel;
 use Config\Services;
 use Config\FileConversion;
+use Config\Logger as LoggerConfig;
+use CodeIgniter\Log\Logger as Logger;
 
 class File extends Controller
 {
@@ -125,18 +127,21 @@ class File extends Controller
         $allowedFileTypes = array_keys($this->allowedConversions);
         $validation->setRules([
             'file' => 'uploaded[file]|mime_in[file,' . implode(',', $allowedFileTypes) . ']|max_size[file,10240]',
+            'convert_to' => 'required',
         ]);
         $file = $this->request->getFile('file');
 
         $uploadedFileMimeType = $file->getMimeType();
+        $convertFileType = $this->request->getPost('convert_to');
+
         // Validate file type and size
         if (!$file->isValid() || !$validation->withRequest($this->request)->run()) {
+            $this->logConversions('Upload type: ' . $uploadedFileMimeType . ' - To type: ' . $convertFileType, 'error');
             return $this->response->setStatusCode(400)->setJSON(['status' => 'error', 'message' => 'Uploaded file not supported.']);
         }
 
-        $convertFileType = $this->request->getPost('convert_to');
-
         if (!in_array($convertFileType, $this->allowedConversions[$uploadedFileMimeType])) {
+            $this->logConversions('Upload type: ' . $uploadedFileMimeType . ' - To type: ' . $convertFileType, 'error');
             return $this->response->setStatusCode(400)->setJSON(['status' => 'error', 'message' => 'Conversion type not supported.']);
         }
 
@@ -253,6 +258,16 @@ class File extends Controller
         }
 
         return $this->response->setJSON($response);
+    }
+
+    private function logConversions($message, $level = 'info')
+    {
+        $loggerConfig = new LoggerConfig();
+        $customPath = 'logs/unsupported-conversions/';
+        $loggerConfig->handlers['CodeIgniter\Log\Handlers\FileHandler']['path'] = WRITEPATH . $customPath;
+
+        $logger = new Logger($loggerConfig);
+        $logger->log($level, $message);
     }
 
     private function getProgress($status)
