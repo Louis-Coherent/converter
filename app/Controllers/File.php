@@ -167,7 +167,7 @@ class File extends Controller
 
         if (!$response) {
             $fileModel->update($fileModel->getInsertID(), ['status' => FileConversion::FAILED, 'error_message' => 'Failed to queue file for conversion.']);
-            return $this->response->setStatusCode(500)->setJSON(['status' => 'error', 'message' => 'Failed to queue file for conversion.']);
+            return $this->response->setStatusCode(500)->setJSON(['status' => FileConversion::FAILED, 'message' => 'Failed to queue file for conversion.']);
         }
 
         $currentFiles[] = [
