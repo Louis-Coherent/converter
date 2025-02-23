@@ -163,7 +163,12 @@ class File extends Controller
             'file_id' => $uuid4,  // Insert binary UUID into DB
         ]);
 
-        service('queue')->push('convert-files', 'file-converter', ['id' => $fileModel->getInsertID(), 'from' => $uploadedFileMimeType, 'to' => $convertFileType, 'filePath' => $filePath]);
+        $response = service('queue')->push('convert-files', 'file-converter', ['id' => $fileModel->getInsertID(), 'from' => $uploadedFileMimeType, 'to' => $convertFileType, 'filePath' => $filePath]);
+
+        if (!$response) {
+            $fileModel->update($fileModel->getInsertID(), ['status' => FileConversion::FAILED, 'error_message' => 'Failed to queue file for conversion.']);
+            return $this->response->setStatusCode(500)->setJSON(['status' => 'error', 'message' => 'Failed to queue file for conversion.']);
+        }
 
         $currentFiles[] = [
             'id' => $uuid4,
