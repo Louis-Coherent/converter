@@ -6,6 +6,7 @@ use App\Libraries\Converters\PdfToImageConverter;
 use App\Libraries\Converters\HtmlToPdfConverter;
 use App\Libraries\Converters\ImagickConverter;
 use App\Libraries\Converters\SpreadsheetConverter;
+use App\Libraries\Converters\WordConverter;
 use Exception;
 
 class ConverterRegistry
@@ -15,6 +16,7 @@ class ConverterRegistry
         HtmlToPdfConverter::class,
         ImagickConverter::class,
         SpreadsheetConverter::class,
+        WordConverter::class,
     ];
 
     public static function getConverter(string $from, string $to)

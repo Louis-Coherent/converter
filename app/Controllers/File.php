@@ -18,15 +18,16 @@ class File extends Controller
         $this->session = Services::session();
 
         $this->allowedConversions = FileConversion::mimeTypes;
-
-        $this->session->setFlashdata('alert', ['message' => 'Welcome to the File Converter!', 'type' => 'info']);
     }
 
     public function index()
     {
         $currentFiles = $this->session->get('files');
 
-        return view('index', ['files' => $currentFiles]);
+        $allowedMimeType = array_keys($this->allowedConversions);
+
+
+        return view('index', ['files' => $currentFiles, 'allowedMimeType' => $allowedMimeType]);
     }
 
     public function allowedConversions()
@@ -34,13 +35,40 @@ class File extends Controller
         $request = $this->request->getJSON();
         $mimeTypes = $request->mime_types ?? [];
 
+        // Initialize an empty response array
         $response = [];
+
+        $extGrouped = FileConversion::extGrouped;
+
+
+        // Loop through the mime types provided in the request
         foreach ($mimeTypes as $mime) {
-            $response[$mime] = $this->allowedConversions[$mime] ?? [];
+            // If mime type has allowed conversions, proceed
+            if (isset($this->allowedConversions[$mime])) {
+                // Get the allowed extensions for this mime type
+                $allowedExtensions = $this->allowedConversions[$mime];
+
+                // Group the allowed extensions
+                foreach ($allowedExtensions as $extension) {
+                    foreach ($extGrouped as $group => $extensions) {
+                        // If the extension belongs to a specific group, add it to that group
+                        if (in_array($extension, $extensions)) {
+                            $groupedExtensions[$group][] = $extension;
+                        }
+                    }
+                }
+
+                // Add the grouped extensions to the response
+                $response[$mime] = $groupedExtensions;
+            } else {
+                $response[$mime] = []; // If no allowed conversions, return an empty array
+            }
         }
 
+        // Return the grouped extensions as a JSON response
         return $this->response->setJSON($response);
     }
+
 
     public function remove()
     {

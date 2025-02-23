@@ -29,8 +29,17 @@ class FileConversion extends Config
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => ['csv', 'xls', 'ods'],
         'text/csv' => ['xlsx', 'xls', 'ods'],
         'application/vnd.oasis.opendocument.spreadsheet' => ['xlsx', 'xls', 'csv'],
+        'application/msword' => ['docx', 'pdf', 'rtf', 'odt', 'txt', 'html', 'epub'],
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => ['pdf', 'rtf', 'odt', 'txt', 'html', 'epub', 'doc'],
+        'application/rtf' => ['docx', 'pdf', 'odt', 'txt', 'html', 'epub'],
+        'application/vnd.oasis.opendocument.text' => ['docx', 'pdf', 'rtf', 'txt', 'html', 'epub'],
     ];
 
+    public const extGrouped = [
+        'Images' => ['jpg', 'jpeg', 'png', 'webp', 'bmp', 'gif', 'tiff', 'svg', 'ico'],
+        'Documents' => ['pdf', 'docx', 'rtf', 'odt', 'txt', 'html', 'epub'],
+        'Spreadsheets' => ['csv', 'xls', 'xlsx', 'ods'],
+    ];
 
     public const PENDING = 'pending';
     public const UPLOADED = 'uploaded';
