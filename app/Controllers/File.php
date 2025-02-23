@@ -42,13 +42,13 @@ class File extends Controller
 
         $extGrouped = FileConversion::extGrouped;
 
-
         // Loop through the mime types provided in the request
         foreach ($mimeTypes as $mime) {
-            // If mime type has allowed conversions, proceed
+
             if (isset($this->allowedConversions[$mime])) {
                 // Get the allowed extensions for this mime type
                 $allowedExtensions = $this->allowedConversions[$mime];
+
 
                 // Group the allowed extensions
                 foreach ($allowedExtensions as $extension) {
@@ -122,20 +122,29 @@ class File extends Controller
 
         $fileModel = new FileModel();
 
-        $validation = Services::validation();
-
         $allowedFileTypes = array_keys($this->allowedConversions);
-        $validation->setRules([
-            'file' => 'uploaded[file]|mime_in[file,' . implode(',', $allowedFileTypes) . ']|max_size[file,10240]',
-            'convert_to' => 'required',
-        ]);
+
+        $validationRule = [
+            'file' => [
+                'label' => 'File',
+                'rules' => [
+                    'uploaded[file]',
+                    'max_size[file,10240]',
+                ],
+            ],
+            'convert_to' => [
+                'label' => 'Convert To',
+                'rules' => 'required',
+            ],
+        ];
+
         $file = $this->request->getFile('file');
 
-        $uploadedFileMimeType = $file->getMimeType();
+        $uploadedFileMimeType = $file->getMimeType() ?? '';
         $convertFileType = $this->request->getPost('convert_to');
 
         // Validate file type and size
-        if (!$file->isValid() || !$validation->withRequest($this->request)->run()) {
+        if (!$file->isValid() || !$this->validate($validationRule) || !in_array($uploadedFileMimeType, $allowedFileTypes)) {
             $this->logConversions('Upload type: ' . $uploadedFileMimeType . ' - To type: ' . $convertFileType, 'error');
             return $this->response->setStatusCode(400)->setJSON(['status' => 'error', 'message' => 'Uploaded file not supported.']);
         }
