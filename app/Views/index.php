@@ -2,7 +2,7 @@
 
 <?= $this->section('content') ?>
 
-<div x-data="fileUpload()" x-init="init()" class="max-w-5xl mx-auto mt-16 p-6 bg-white shadow-lg rounded-lg">
+<div x-data="fileUpload()" class="max-w-5xl mx-auto mt-16 p-6 bg-white shadow-lg rounded-lg">
     <h2 class="text-2xl font-semibold mb-4">File Upload & Conversion</h2>
 
     <div class="border border-dashed border-gray-300 p-6 text-center rounded-lg cursor-pointer"
@@ -342,13 +342,7 @@
                         });
                     }
                 } catch (error) {
-                    console.log(error)
-                    document.dispatchEvent(new CustomEvent('alert', {
-                        detail: {
-                            message: 'Error fetching allowed conversions',
-                            type: 'error'
-                        }
-                    }));
+                    showAlert('Error fetching allowed conversions', 'error');
                 }
             },
             async handleSingleFileConvert(file) {
@@ -401,21 +395,11 @@
                         file => !data.files.some(status => status.id === file.id)
                     );
 
-                    document.dispatchEvent(new CustomEvent('alert', {
-                        detail: {
-                            message: 'Files removed successfully!',
-                            type: 'success'
-                        }
-                    }));
+                    showAlert('Files removed successfully', 'success');
                     return;
                 }
 
-                document.dispatchEvent(new CustomEvent('alert', {
-                    detail: {
-                        message: data.message,
-                        type: 'error'
-                    }
-                }));
+                showAlert('Error removing files', 'error');
             },
 
             async uploadFile(fileObj) {
@@ -437,27 +421,18 @@
                         fileObj.progress = 10;
                         fileObj.isConverting = false;
 
-                        console.log('File uploaded successfully:', data);
+                        showAlert('File uploaded successfully', 'success');
 
-                        document.dispatchEvent(new CustomEvent('alert', {
-                            detail: {
-                                message: 'File uploaded successfully!',
-                                type: 'success'
-                            }
-                        }));
                     } else {
                         const data = await response.json();
 
-                        document.dispatchEvent(new CustomEvent('alert', {
-                            detail: {
-                                message: data.message,
-                                type: 'error'
-                            }
-                        }));
+                        showAlert(data.message, 'error');
+
                         fileObj.file = null
                         fileObj.status = 'failed';
                     }
                 } catch (error) {
+                    showAlert('Error during upload', 'error');
                     fileObj.errorMessage = 'Error during upload';
                     fileObj.status = 'error';
                 }

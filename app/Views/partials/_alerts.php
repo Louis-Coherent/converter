@@ -1,5 +1,5 @@
 <!-- Alerts Section -->
-<div x-data="alertHandler()" x-init="init()" class="fixed bottom-0 right-0 p-4 md:p-6 space-y-4 z-50">
+<div x-data="alertHandler()" class="fixed bottom-0 right-0 p-4 md:p-6 space-y-4 z-50">
     <template x-for="alert in alerts" :key="alert.id">
         <div :class="alertClasses(alert)" class="bg-blue-500 text-white p-4 rounded-lg shadow-lg relative opacity-75">
             <div class="flex justify-between items-center">
@@ -22,28 +22,10 @@
         return {
             alerts: [],
             alertId: 0,
-            listenerAdded: false,
             init() {
-                if (this.listenerAdded) {
-                    document.addEventListener('alert', (event) => {
-                        console.log('Alert received:', event.detail.message);
-                        this.showAlert(event.detail.message, event.detail.type);
-                    });
-                    this.listenerAdded = true;
-
-                } // Avoid adding listener multiple times
-                document.addEventListener('alert', (event) => {
-                    this.showAlert(event.detail.message, event.detail.type);
-                });
-                // Check for session alert
-                const alertMessage =
-                    <?= json_encode(session()->getFlashdata("alert")) ?>; // Adjust based on your framework's session flashdata
-                if (alertMessage) {
-                    this.showAlert(alertMessage.message, alertMessage.type);
-                }
+                window.showAlert = this.showAlert.bind(this);
             },
             showAlert(message, type = 'info') {
-                console.log('Showing alert:', message, type);
                 const id = this.alertId++;
                 this.alerts.push({
                     id,
