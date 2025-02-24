@@ -267,6 +267,11 @@
                 </div>
             </span>
         </button>
+        <a href="/file/download-zip"
+            class="bg-blue-500 text-white px-6 py-2 rounded mt-4 hover:bg-blue-600 transition relative"
+            x-show="selectedFiles.length > 0 && selectedFiles.some(file => file.id != null)">
+            <span>Download All</span>
+        </a>
 
         <!-- Remove All button -->
         <button @click="removeFiles(selectedFiles)"

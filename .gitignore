@@ -61,6 +61,9 @@ writable/logs/unsupported-conversions/*
 writable/session/*
 !writable/session/index.html
 
+writable/temp/*
+!writable/temp/index.html
+
 writable/uploads/*
 !writable/uploads/index.html
 

@@ -23,6 +23,14 @@
             alerts: [],
             alertId: 0,
             init() {
+
+                const alertMessage =
+                    <?= json_encode(session()->getFlashdata("alert")) ?>; // Adjust based on your framework's session flashdata
+                if (alertMessage) {
+
+                    this.showAlert(alertMessage.message, alertMessage.type);
+                }
+
                 window.showAlert = this.showAlert.bind(this);
             },
             showAlert(message, type = 'info') {

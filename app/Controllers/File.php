@@ -28,7 +28,6 @@ class File extends Controller
 
         $allowedMimeType = array_keys($this->allowedConversions);
 
-
         return view('index', ['files' => $currentFiles, 'allowedMimeType' => $allowedMimeType]);
     }
 
@@ -218,17 +217,74 @@ class File extends Controller
         $file = $fileModel->findUuid($fileId);
 
         if (!$file) {
-            return redirect()->back()->with('error', 'File not found.');
+            return redirect()->back()->with('alert', ['message' => 'File not found.', 'type' => 'error']);
         }
 
         $filePath = WRITEPATH . 'converted_files/' . $file['converted_file_path'];
 
         if (!file_exists($filePath)) {
-            return redirect()->back()->with('error', 'File not found.');
+            return redirect()->back()->with('alert', ['message' => 'File not found.', 'type' => 'error']);
         }
 
         return $this->response->download($filePath, null)->setFileName($file['og_file_name'] . '.' . $file['format_to']);
     }
+
+    public function downloadMultiple()
+    {
+        $fileModel = new FileModel();
+
+        $currentFiles = $this->session->get('files');
+        if (empty($currentFiles)) {
+            return redirect()->back()->with('alert', ['message' => 'No files to download.', 'type' => 'error']);
+        }
+        $fileIds = array_column($currentFiles, 'id');
+
+        $tempDir = WRITEPATH . 'temp/';
+
+        $tmp_file = $tempDir . 'file-shift-' . time() . '.zip';
+
+        $zip = new \ZipArchive();
+        $zipOpenResult = $zip->open($tmp_file, \ZipArchive::CREATE);
+
+        if ($zipOpenResult !== true) {
+            return redirect()->back()->with('alert', ['message' => "Could not create ZIP file.", 'type' => 'error']);
+        }
+
+        $filesAdded = 0;
+        foreach ($fileIds as $fileId) {
+            $file = $fileModel->findUuid($fileId);
+
+            if (!$file) {
+                continue; // Skip to next file
+            }
+
+            $filePath = WRITEPATH . 'converted_files/' . $file['converted_file_path'];
+
+            if (!file_exists($filePath)) {
+                continue; // Skip to next file
+            }
+
+            $zip->addFile($filePath, $file['og_file_name'] . '.' . $file['format_to']);
+            $filesAdded++;
+        }
+
+        $zip->close();
+
+        if ($filesAdded === 0 || !file_exists($tmp_file)) {
+            unlink($tmp_file); // Cleanup empty zip file
+            return redirect()->back()->with('alert', ['message' => 'No valid files to download.', 'type' => 'error']);
+        }
+
+        $zipFile = file_get_contents($tmp_file);
+        unlink($tmp_file); // Cleanup empty zip file
+
+        return $this->response
+            ->setHeader('Content-Type', 'application/zip')
+            ->setHeader('Content-Disposition', 'attachment; filename="file-shift.zip"')
+            ->setBody($zipFile)
+            ->send();
+    }
+
 
     public function status()
     {

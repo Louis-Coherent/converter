@@ -13,6 +13,7 @@ $routes->group('file', function ($routes) {
     $routes->post('status', 'File::status', ['filter' => 'ajax']);
     $routes->post('remove', 'File::remove', ['filter' => 'ajax']);
     $routes->get('download/(:any)', 'File::downloadSingle/$1');
+    $routes->get('download-zip', 'File::downloadMultiple');
 });
 
 $routes->cli('test', 'Dev::test');
