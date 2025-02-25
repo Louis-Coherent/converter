@@ -32,4 +32,27 @@ class FilesAdmin
 
         return null;
     }
+
+    public  static function findAndDelete()
+    {
+        $fileModel = new FileModel();
+        $fiveMinutesAgo = date('Y-m-d H:i:s', strtotime('-30 minutes'));
+        $files = $fileModel->where('updated_at <', $fiveMinutesAgo)->findAll();
+
+        if (!empty($files)) {
+
+            foreach ($files as $file) {
+
+                if (file_exists(WRITEPATH . 'uploads/' . $file['file_path'])) {
+                    unlink(WRITEPATH . 'uploads/' . $file['file_path']);
+                }
+
+                if (!empty($file['converted_file_path']) && file_exists(WRITEPATH . 'converted_files/' . $file['converted_file_path'])) {
+                    unlink(WRITEPATH . 'converted_files/' . $file['converted_file_path']);
+                }
+            }
+        }
+
+        return null;
+    }
 }
