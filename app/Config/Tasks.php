@@ -48,5 +48,9 @@ class Tasks extends BaseTasks
         $schedule->call(function () {
             \App\Libraries\FilesAdmin::findAndSend();
         })->named('find-send')->everyFiveMinutes();
+
+        $schedule->call(function () {
+            \App\Libraries\FilesAdmin::findAndDelete();
+        })->named('find-delete')->everyThirtyMinutes();
     }
 }
