@@ -773,6 +773,10 @@ video {
   max-width: 64rem;
 }
 
+.shrink {
+  flex-shrink: 1;
+}
+
 .border-collapse {
   border-collapse: collapse;
 }

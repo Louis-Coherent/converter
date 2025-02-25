@@ -18,7 +18,7 @@ class FilesAdmin
 
             $email = \Config\Services::email();
 
-            $email->setTo('louis@coherent-innovations.co.uk', 'admin');
+            $email->setTo('louis@coherent-innovations.co.uk');
             $email->setSubject('Files Converted in the Last 5 Minutes');
             $email->setMessage(view('email-templates/admin/found-files', ['files' => $files]));
 
