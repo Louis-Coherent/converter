@@ -1,5 +1,7 @@
 <?php
 
+use Config\FileConversion;
+use Symfony\Component\Mime\MimeTypes;
 use CodeIgniter\Router\RouteCollection;
 
 /**
@@ -19,6 +21,23 @@ $routes->group('file', function ($routes) {
 $routes->get('supported-files', function () {
     return view('supported-files');
 });
+
+// Your mimeTypes array from FileConversion
+$mimeTypes = FileConversion::mimeTypes;
+
+
+// Loop through mimeTypes and extensions to generate routes manually
+foreach ($mimeTypes as $mimeType => $extensions) {
+    $mimeTypes = new MimeTypes();
+
+    $mimeType = ($mimeTypes->getExtensions($mimeType)[0]) ?? '';
+    foreach ($extensions as $extension) {
+
+        // Define a route for each conversion (crawlable)
+        $routes->get("{$mimeType}-to-{$extension}", 'File::index/' . $mimeType . '/' . $extension);
+    }
+}
+
 
 
 $routes->cli('test', 'Dev::test');

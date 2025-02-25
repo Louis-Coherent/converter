@@ -22,13 +22,13 @@ class File extends Controller
         $this->allowedConversions = FileConversion::mimeTypes;
     }
 
-    public function index()
+    public function index($from = null, $to = null)
     {
         $currentFiles = $this->session->get('files');
 
         $allowedMimeType = array_keys($this->allowedConversions);
 
-        return view('index', ['files' => $currentFiles, 'allowedMimeType' => $allowedMimeType]);
+        return view('index', ['files' => $currentFiles, 'allowedMimeType' => $allowedMimeType, 'from' => $from, 'to' => $to]);
     }
 
     public function allowedConversions()
