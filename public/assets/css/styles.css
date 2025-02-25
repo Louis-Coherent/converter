@@ -685,6 +685,10 @@ video {
   margin-top: 2rem;
 }
 
+.me-4 {
+  margin-inline-end: 1rem;
+}
+
 .block {
   display: block;
 }

@@ -35,6 +35,7 @@ class Filters extends BaseFilters
         'pagecache'     => PageCache::class,
         'performance'   => PerformanceMetrics::class,
         'ajax'          => \App\Filters\AjaxFilter::class,
+        'throttler'     => \App\Filters\IPThrottler::class,
     ];
 
     /**
@@ -54,6 +55,7 @@ class Filters extends BaseFilters
         'before' => [
             'forcehttps', // Force Global Secure Requests
             'pagecache',  // Web Page Caching
+            'throttler',  // Web Page Caching
         ],
         'after' => [
             'pagecache',   // Web Page Caching

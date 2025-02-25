@@ -24,7 +24,12 @@ class AjaxFilter implements FilterInterface
      *
      * @return RequestInterface|ResponseInterface|string|void
      */
-    public function before(RequestInterface $request, $arguments = null) {}
+    public function before(RequestInterface $request, $arguments = null)
+    {
+        // if (!$request->isAJAX()) {
+        //     throw PageNotFoundException::forPageNotFound();
+        // }
+    }
 
     /**
      * Allows After filters to inspect and modify the response

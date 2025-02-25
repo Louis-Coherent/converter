@@ -220,6 +220,10 @@ class File extends Controller
             return redirect()->back()->with('alert', ['message' => 'File not found.', 'type' => 'error']);
         }
 
+        if ($file['status'] != FileConversion::COMPLETE || empty($file['converted_file_path'])) {
+            return redirect()->back()->with('alert', ['message' => 'File not ready for download.', 'type' => 'error']);
+        }
+
         $filePath = WRITEPATH . 'converted_files/' . $file['converted_file_path'];
 
         if (!file_exists($filePath)) {
@@ -234,10 +238,20 @@ class File extends Controller
         $fileModel = new FileModel();
 
         $currentFiles = $this->session->get('files');
+
         if (empty($currentFiles)) {
             return redirect()->back()->with('alert', ['message' => 'No files to download.', 'type' => 'error']);
         }
-        $fileIds = array_column($currentFiles, 'id');
+
+        foreach ($currentFiles as $file) {
+            if ($file['status'] == FileConversion::COMPLETE && !empty($file['converted_file_path']) && file_exists(WRITEPATH . 'converted_files/' . $file['converted_file_path'])) {
+                $fileIds[] = $file['id'];
+            }
+        }
+
+        if (empty($fileIds)) {
+            return redirect()->back()->with('alert', ['message' => 'No files ready to download.', 'type' => 'error']);
+        }
 
         $tempDir = WRITEPATH . 'temp/';
 
