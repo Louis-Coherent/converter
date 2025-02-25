@@ -4,23 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- General Meta Tags -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="index, follow">
-
-    <!-- SEO Meta Tags -->
     <title>File Shift - Fast & Secure File Conversion Platform</title>
     <meta name="description"
         content="File Shift is a fast and secure online platform that helps you convert your files between different formats with ease. Start converting today!">
     <meta name="keywords"
         content="file conversion, convert files, online file converter, pdf to word, image to pdf, audio conversion, video converter">
+    <link rel="icon" href="<?= base_url('file-shift.ico') ?>">
 
     <!-- Open Graph Meta Tags for Social Media (Facebook, LinkedIn, etc.) -->
     <meta property="og:title" content="File Shift - Fast & Secure File Conversion Platform">
     <meta property="og:description"
         content="Convert files quickly and securely on File Shift. From documents to images, our platform supports a variety of formats for your conversion needs.">
-    <meta property="og:image" content="https://file-shift.com/images/og-image.jpg">
+    <meta property="og:image" content="<?= base_url('file-shift-logo.png') ?>">
     <!-- Replace with actual image URL -->
     <meta property="og:url" content="https://file-shift.com">
     <meta property="og:type" content="website">
@@ -29,7 +25,7 @@
     <meta name="twitter:title" content="File Shift - Fast & Secure File Conversion Platform">
     <meta name="twitter:description"
         content="Convert files quickly and securely on File Shift. Easily handle various file formats with our fast conversion platform.">
-    <meta name="twitter:image" content="https://file-shift.com/images/twitter-card-image.jpg">
+    <meta name="twitter:image" content="<?= base_url('file-shift-logo.png') ?>">
     <!-- Replace with actual image URL -->
     <meta name="twitter:card" content="summary_large_image">
 
