@@ -33,15 +33,16 @@ class GenerateSitemap extends BaseCommand
         $xml->startElement('urlset');
         $xml->writeAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
 
+        $siteUrl = 'https://file-shift.com/';
         // Add the homepage or root URL
         $xml->startElement('url');
-        $xml->writeElement('loc', base_url('/'));
+        $xml->writeElement('loc', $siteUrl);
         $xml->writeElement('lastmod', date('Y-m-d'));
         $xml->writeElement('priority', '1.0');
         $xml->endElement(); // url
 
         $xml->startElement('url');
-        $xml->writeElement('loc', base_url('supported-files'));
+        $xml->writeElement('loc', $siteUrl . 'supported-files');
         $xml->writeElement('lastmod', date('Y-m-d'));
         $xml->writeElement('priority', '1.0');
         $xml->endElement(); // url
@@ -58,7 +59,7 @@ class GenerateSitemap extends BaseCommand
                 $newMimeType = $mimeTypesChange->getExtensions($mimeType)[0] ?? '';
 
                 // Construct the URL for the conversion route
-                $url = site_url("{$newMimeType}-to-{$extension}");
+                $url = $siteUrl . ("{$newMimeType}-to-{$extension}");
 
                 // Add a URL entry for this conversion route
                 $xml->startElement('url');
