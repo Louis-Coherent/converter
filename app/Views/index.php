@@ -2,7 +2,7 @@
 
 <?= $this->section('content') ?>
 
-<div x-data="fileUpload()" class="max-w-5xl mx-auto mt-16 p-6 bg-white shadow-lg rounded-lg">
+<div x-data="fileUpload()" class="max-w-5xl mx-auto mt-16 p-6 bg-white shadow-lg border rounded-lg">
     <h2 class="text-2xl font-semibold mb-4">File Upload & Conversion</h2>
 
     <div class="border border-dashed border-gray-300 p-6 text-center rounded-lg cursor-pointer"
@@ -282,6 +282,9 @@
     </div>
 
 </div>
+
+<?= $this->include('partials/_faq') ?>
+
 
 
 <script>

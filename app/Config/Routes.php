@@ -16,4 +16,10 @@ $routes->group('file', function ($routes) {
     $routes->get('download-zip', 'File::downloadMultiple');
 });
 
+$routes->get('supported-files', function () {
+    return view('supported-files');
+});
+
+
 $routes->cli('test', 'Dev::test');
+$routes->cli('test-email', 'Dev::testSendEmail');

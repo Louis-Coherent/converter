@@ -128,7 +128,7 @@ class File extends Controller
                 'label' => 'File',
                 'rules' => [
                     'uploaded[file]',
-                    'max_size[file,10240]',
+                    'max_size[file,204800]',
                 ],
             ],
             'convert_to' => [
