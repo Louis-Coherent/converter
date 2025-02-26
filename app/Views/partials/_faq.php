@@ -4,6 +4,7 @@
     <div class="divide-y divide-gray-200">
         <template x-for="(faq, index) in [
             { question: 'How do I upload a file?', answer: 'Click on the upload area or drag and drop your files into the designated space.' },
+            { question: 'How long do you retain files?', answer: 'Files are automatically removed every 30 minutes from our servers.' },
             { question: 'What file formats are supported?', answer: 'We support a wide range of formats. <a href=\'supported-files\' class=\'text-blue-600 hover:text-blue-800\'>Supported files</a>.' },
             { question: 'How long does the conversion take?', answer: 'Conversion times depend on the file size and format but typically take a few seconds to a minute.' },
             { question: 'Is there a file size limit?', answer: 'Yes, the maximum file size is 200MB per file.' },
@@ -28,57 +29,65 @@
 </div>
 
 <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [{
-                "@type": "Question",
-                "name": "How do I upload a file?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Click on the upload area or drag and drop your files into the designated space."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "What file formats are supported?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "We support a wide range of formats. <a href=\"supported-files\" class=\"text-blue-600 hover:text-blue-800\">Supported files</a>."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "How long does the conversion take?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Conversion times depend on the file size and format but typically take a few seconds to a minute."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "Is there a file size limit?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Yes, the maximum file size is 200MB per file."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "How can I download my converted files?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Once the conversion is complete, you can click the download button next to your file."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "Can I convert multiple files at once?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Yes, you can upload multiple files and convert them simultaneously."
-                }
+{
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [{
+            "@type": "Question",
+            "name": "How do I upload a file?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Click on the upload area or drag and drop your files into the designated space."
             }
-        ]
-    }
+        },
+        {
+            "@type": "Question",
+            "name": "How long do you retain files?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Files are automatically removed every 30 minutes from our servers."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "What file formats are supported?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "We support a wide range of formats. <a href=\"supported-files\" class=\"text-blue-600 hover:text-blue-800\">Supported files</a>."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "How long does the conversion take?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Conversion times depend on the file size and format but typically take a few seconds to a minute."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "Is there a file size limit?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes, the maximum file size is 200MB per file."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "How can I download my converted files?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Once the conversion is complete, you can click the download button next to your file."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "Can I convert multiple files at once?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes, you can upload multiple files and convert them simultaneously."
+            }
+        }
+    ]
+}
 </script>

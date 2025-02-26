@@ -43,13 +43,31 @@
     <!-- Alpine.js (CDN) -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"></script>
     <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-        }
+    body {
+        font-family: 'Poppins', sans-serif;
+    }
     </style>
 </head>
 
 <body>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "File Shift",
+        "url": "https://file-shift.com",
+        "description": "Convert your files easily with our online converter. Supports various formats with secure processing.",
+        "publisher": {
+            "@type": "Organization",
+            "name": "File Shift",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "<?= base_url('file-shift-logo.png') ?>"
+
+            }
+        }
+    }
+    </script>
     <?= $this->include('partials/_topbar') ?>
     <?= $this->include('partials/_alerts') ?>
 

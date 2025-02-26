@@ -307,6 +307,29 @@
 
 </div>
 
+<section class="py-12 my-12 bg-gray-100">
+    <div class="max-w-5xl mx-auto">
+        <h3 class="text-xl font-semibold mb-4">How It Works</h3>
+        <div class="grid md:grid-cols-3 gap-6">
+            <div class="p-4 border rounded-lg shadow-md bg-gray-50">
+                <h4 class="text-lg font-medium">1. Upload Your File</h4>
+                <p class="text-gray-600 mt-2">Drag & drop or click to upload your file from your device. <a
+                        href="supported-files" class="text-blue-600 hover:text-blue-800">Supported files</a></p>
+            </div>
+            <div class="p-4 border rounded-lg shadow-md bg-gray-50">
+                <h4 class="text-lg font-medium">2. Choose Conversion Format</h4>
+                <p class="text-gray-600 mt-2">Select the desired format for conversion from the available options.</p>
+            </div>
+            <div class="p-4 border rounded-lg shadow-md bg-gray-50">
+                <h4 class="text-lg font-medium">3. Download Your File</h4>
+                <p class="text-gray-600 mt-2">Click the download button once the conversion is complete.</p>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
 <?= $this->include('partials/_faq') ?>
 
 <script>
