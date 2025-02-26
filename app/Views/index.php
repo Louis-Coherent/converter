@@ -386,10 +386,6 @@ function fileUpload() {
         uploadFromDropbox() {
             Dropbox.choose({
                 success: async (files) => {
-                    console.log("Selected file from Dropbox:", files[0]);
-
-                    console.log(files)
-
                     // Download the file as a Blob
                     const response = await fetch(files[0].link);
                     const blob = await response.blob();
@@ -398,6 +394,8 @@ function fileUpload() {
                     const file = new File([blob], files[0].name, {
                         type: blob.type
                     });
+
+                    console.log(file)
 
                     // Trigger the normal file upload process
                     this.handleDropboxFile(file);
@@ -412,7 +410,7 @@ function fileUpload() {
                 file: file,
                 id: null,
                 name: file.name,
-                mimeType: file.type,
+                mimeType: null,
                 progress: 0,
                 selectedConversion: null,
                 isConverting: false,
