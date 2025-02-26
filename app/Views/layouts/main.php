@@ -12,7 +12,7 @@
     <meta name="keywords"
         content="file conversion, convert files, online file converter, pdf to word, image to pdf, audio conversion, video converter">
     <link rel="icon" href="<?= base_url('file-shift.ico') ?>">
-
+<script defer src="https://cloud.umami.is/script.js" data-website-id="caba49ba-759b-4f5b-8baf-0963c1917845"></script>
     <!-- Open Graph Meta Tags for Social Media (Facebook, LinkedIn, etc.) -->
     <meta property="og:title" content="File Shift - Fast & Secure File Conversion Platform">
     <meta property="og:description"
