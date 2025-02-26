@@ -142,6 +142,12 @@ class File extends Controller
 
         $file = $this->request->getFile('file');
 
+        $scanResult = shell_exec("clamscan --no-summary " . escapeshellarg($file->getTempName()));
+
+        if (strpos($scanResult, 'OK') === false) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Malicious file detected.'])->setStatusCode(400);
+        }
+
         $uploadedFileMimeType = $file->getMimeType() ?? '';
         $convertFileType = $this->request->getPost('convert_to');
 
