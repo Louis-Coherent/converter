@@ -164,9 +164,8 @@ class File extends Controller
 
         $clamdPath = 'clamdscan'; // Faster than clamscan
 
-        $scanResult = shell_exec(escapeshellarg($clamdPath) . " --no-summary " . escapeshellarg($filePath));
+        $scanResult = shell_exec(escapeshellarg($clamdPath) . " --no-summary " . escapeshellarg(WRITEPATH . 'uploads/' . $filePath));
 
-        log_message('info', escapeshellarg($clamdPath) . " --no-summary " . escapeshellarg($filePath));
         log_message('error', json_encode($scanResult));
 
         if (strpos($scanResult, 'OK') === false) {
