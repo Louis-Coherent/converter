@@ -36,6 +36,7 @@ class Filters extends BaseFilters
         'performance'   => PerformanceMetrics::class,
         'ajax'          => \App\Filters\AjaxFilter::class,
         'throttler'     => \App\Filters\IPThrottler::class,
+        'noindex'       => \App\Filters\NoIndex::class,
     ];
 
     /**
