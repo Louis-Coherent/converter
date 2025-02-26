@@ -9,6 +9,8 @@ use Config\FileConversion;
 use Config\Logger as LoggerConfig;
 use CodeIgniter\Log\Logger as Logger;
 
+use function PHPUnit\Framework\fileExists;
+
 class File extends Controller
 {
 
@@ -142,14 +144,6 @@ class File extends Controller
 
         $file = $this->request->getFile('file');
 
-        $clamdPath = '/usr/bin/clamdscan'; // Faster than clamscan
-
-        $scanResult = shell_exec(escapeshellarg($clamdPath) . " --no-summary " . escapeshellarg($file->getTempName()));
-
-        if (strpos($scanResult, 'OK') === false) {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'Malicious file detected.'])->setStatusCode(400);
-        }
-
         $uploadedFileMimeType = $file->getMimeType() ?? '';
         $convertFileType = $this->request->getPost('convert_to');
 
@@ -167,6 +161,17 @@ class File extends Controller
         $fileName = $file->getRandomName();
 
         $filePath = $file->store('files', $fileName);
+
+        $clamdPath = '/usr/bin/clamdscan'; // Faster than clamscan
+
+        $scanResult = shell_exec(escapeshellarg($clamdPath) . " --no-summary " . escapeshellarg($filePath));
+
+        if (strpos($scanResult, 'OK') === false) {
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Malicious file detected.'])->setStatusCode(400);
+        }
 
         $uuid = service('uuid');
         $uuid4 = $uuid->uuid4()->toString();
