@@ -7,6 +7,8 @@
 
 <?= $this->section('content') ?>
 
+<script src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="nrb8qhwo5gcr71w">
+</script>
 
 
 <div x-data="fileUpload()" class="max-w-5xl mx-auto mt-16 p-6 bg-white shadow-lg border rounded-lg">
@@ -24,6 +26,15 @@
         <?php endif; ?>
         <input type="file" x-ref="fileInput" accept="<?= implode(', ', $allowedMimeType) ?>" @change="handleFileSelect"
             multiple class="hidden" />
+
+        <div class="flex justify-center gap-4 mt-4">
+            <button type="button" @click="uploadFromDropbox" class="bg-blue-500 text-white px-3 py-2 rounded">Upload
+                from Dropbox</button>
+            <!-- <button type="button" @click="uploadFromOneDrive" class="bg-green-500 text-white px-3 py-2 rounded">Upload
+                from OneDrive</button>
+            <button type="button" @click="uploadFromGoogleDrive" class="bg-red-500 text-white px-3 py-2 rounded">Upload
+                from Google Drive</button> -->
+        </div>
     </div>
 
     <template x-if="selectedFiles.length > 0">
@@ -370,6 +381,46 @@ function fileUpload() {
             }));
 
             this.selectedFiles = [...this.selectedFiles, ...newFiles]; // Merge new files with the existing ones
+            await this.updateAllowedConversions();
+        },
+        uploadFromDropbox() {
+            Dropbox.choose({
+                success: async (files) => {
+                    console.log("Selected file from Dropbox:", files[0]);
+
+                    // Download the file as a Blob
+                    const response = await fetch(files[0].link);
+                    const blob = await response.blob();
+
+                    // Create a File object from the Blob
+                    const file = new File([blob], files[0].name, {
+                        type: blob.type
+                    });
+
+                    // Trigger the normal file upload process
+                    this.handleDropboxFile(file);
+                },
+                linkType: "direct",
+                multiselect: false,
+            });
+        },
+
+        async handleDropboxFile(file) {
+            const newFile = {
+                file: file,
+                id: null,
+                name: file.name,
+                mimeType: file.type,
+                progress: 0,
+                selectedConversion: null,
+                isConverting: false,
+                errorMessage: '',
+                status: 'pending',
+                allowedConversions: []
+            };
+
+            // Add the file to the list and update conversions
+            this.selectedFiles = [...this.selectedFiles, newFile];
             await this.updateAllowedConversions();
         },
         truncate(string, n) {
