@@ -308,8 +308,8 @@
 </div>
 
 <section class="py-12 my-12 bg-gray-100">
-    <div class="max-w-5xl mx-auto">
-        <h3 class="text-xl font-semibold mb-4">How It Works</h3>
+    <div class="max-w-5xl mx-auto px-10">
+        <h2 class="text-xl font-semibold mb-4">How It Works</h2>
         <div class="grid md:grid-cols-3 gap-6">
             <div class="p-4 border rounded-lg shadow-md bg-gray-50">
                 <h4 class="text-lg font-medium">1. Upload Your File</h4>
@@ -328,6 +328,22 @@
     </div>
 
 </section>
+
+<div class="max-w-5xl mx-auto mt-16 p-6 bg-white shadow-lg border rounded-lg">
+    <h2 class="text-2xl font-semibold mb-4">Why Choose Our Converter?</h2>
+    <ul class="list-disc list-inside text-gray-700 space-y-2">
+        <li><strong>Fast & Efficient:</strong> Our advanced conversion engine ensures quick processing times for all
+            file types.</li>
+        <li><strong>High-Quality Output:</strong> Maintain the best quality possible when converting documents, images,
+            audio, and more.</li>
+        <li><strong>Secure & Private:</strong> Your uploaded files are encrypted and automatically deleted after
+            conversion for your privacy.</li>
+        <li><strong>Wide Format Support:</strong> Convert between multiple file formats, including images, documents,
+            audio, and archives.</li>
+        <li><strong>User-Friendly Interface:</strong> Our simple and intuitive design makes file conversion hassle-free,
+            even for beginners.</li>
+    </ul>
+</div>
 
 
 <?= $this->include('partials/_faq') ?>
