@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="index, follow">
-    <title>File Shift - Fast & Secure File Conversion Platform</title>
+    <title><?= $title ?></title>
+    <meta name="title" content="<?= $metaTitle ?>">
     <meta name="description"
         content="File Shift is a fast and secure online platform that helps you convert your files between different formats with ease. Start converting today!">
     <meta name="keywords"
@@ -41,9 +42,9 @@
     <!-- Alpine.js (CDN) -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"></script>
     <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-        }
+    body {
+        font-family: 'Poppins', sans-serif;
+    }
     </style>
 </head>
 
