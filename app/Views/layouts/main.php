@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="index, follow">
-    <title><?= $title ?></title>
-    <meta name="title" content="<?= $metaTitle ?>">
+    <title><?= $title ?? '' ?></title>
+    <meta name="title" content="<?= $metaTitle ?? '' ?>">
     <meta name="description"
         content="File Shift is a fast and secure online platform that helps you convert your files between different formats with ease. Start converting today!">
     <meta name="keywords"
