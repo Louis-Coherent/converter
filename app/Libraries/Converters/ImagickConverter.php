@@ -33,16 +33,6 @@ class ImagickConverter implements ConverterInterface
             throw new Exception("Unsupported output format: $to");
         }
 
-        $cmd = "gs -o /dev/null -sDEVICE=nullpage -dSAFER " . escapeshellarg($filePath);
-        $output = [];
-        $returnVar = 0;
-
-        exec($cmd, $output, $returnVar);
-
-        if ($returnVar !== 0) {
-            throw new Exception("Corrupt file.");
-        }
-
         $imagick = new \Imagick();
         $imagick->readImage($filePath);
 
