@@ -142,7 +142,9 @@ class File extends Controller
 
         $file = $this->request->getFile('file');
 
-        $scanResult = shell_exec("clamdscan --no-summary " . escapeshellarg($file->getTempName()));
+        $clamdPath = '/usr/bin/clamdscan'; // Faster than clamscan
+
+        $scanResult = shell_exec(escapeshellarg($clamdPath) . " --no-summary " . escapeshellarg($file->getTempName()));
 
         if (strpos($scanResult, 'OK') === false) {
             return $this->response->setJSON(['status' => 'error', 'message' => 'Malicious file detected.'])->setStatusCode(400);
