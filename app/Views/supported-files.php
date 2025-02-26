@@ -13,7 +13,7 @@ use Symfony\Component\Mime\MimeTypes;
         <h2 class="text-2xl font-semibold text-center text-blue-600">Supported Conversions</h2>
         <p class="text-gray-600 text-center mt-2">Easily convert files between these formats.</p>
         <div class="text-center mt-6">
-            <a href="<?= base_url('/') ?>"
+            <a data-umami-event="{Convert Button}" href="<?= base_url('/') ?>"
                 class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-300">
                 Convert Now
             </a>
@@ -52,7 +52,7 @@ use Symfony\Component\Mime\MimeTypes;
 
         <!-- Convert Now Button -->
         <div class="text-center mt-6">
-            <a href="<?= base_url('/') ?>"
+            <a data-umami-event="{Convert Button}" href="<?= base_url('/') ?>"
                 class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-300">
                 Convert Now
             </a>
