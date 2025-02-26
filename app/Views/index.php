@@ -273,7 +273,7 @@
         <!-- Convert Files button -->
         <button @click="handleBulkFileConvert" data-umami-event="{Bulk Convert}"
             class="bg-blue-500 text-white px-6 py-2 rounded mt-4 me-4 hover:bg-blue-600 transition relative"
-            x-show="selectedFiles.length > 0 && selectedFiles.some(file => file.id === null)">
+            x-show="selectedFiles.length > 0 && selectedFiles.some(file => file.id === null && file.file != null)">
             <span x-show="!isConverting">Convert Files</span>
             <span x-show="isConverting" class="absolute inset-0 flex items-center justify-center">
                 <div role="status">
@@ -456,11 +456,15 @@ function fileUpload() {
         },
 
         async uploadFile(fileObj) {
-            if (!fileObj.selectedConversion || fileObj.id != null) return;
+            if (!fileObj.selectedConversion || fileObj.id != null || fileObj.file == null || fileObj.status ==
+                'uploading')
+                return;
             const formData = new FormData();
             formData.append('file', fileObj.file);
-            formData.append('convert_to', fileObj.selectedConversion);
+            formData.append(
+                'convert_to', fileObj.selectedConversion);
             fileObj.isConverting = true;
+            fileObj.status = 'uploading'
 
             try {
                 const response = await fetch('/file/upload', {
@@ -523,7 +527,8 @@ function fileUpload() {
                             file.progress = statusObj.progress;
                         }
                     });
-                    if (this.selectedFiles.every(file => file.status === 'completed' || file.status === 'error')) {
+                    if (this.selectedFiles.every(file => file.status === 'completed' || file.status ===
+                            'error')) {
                         clearInterval(this.pollingInterval);
                         this.pollingInterval = null;
                     }

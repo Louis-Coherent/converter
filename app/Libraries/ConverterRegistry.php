@@ -7,6 +7,7 @@ use App\Libraries\Converters\HtmlToPdfConverter;
 use App\Libraries\Converters\ImagickConverter;
 use App\Libraries\Converters\SpreadsheetConverter;
 use App\Libraries\Converters\WordConverter;
+use App\Libraries\Converters\DataFormatConverter;
 use Exception;
 
 class ConverterRegistry
@@ -17,6 +18,7 @@ class ConverterRegistry
         ImagickConverter::class,
         SpreadsheetConverter::class,
         WordConverter::class,
+        DataFormatConverter::class,
     ];
 
     public static function getConverter(string $from, string $to)

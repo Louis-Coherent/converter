@@ -33,12 +33,16 @@ class FileConversion extends Config
         'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => ['pdf', 'rtf', 'odt', 'txt', 'html', 'epub', 'doc'],
         'application/rtf' => ['docx', 'pdf', 'odt', 'txt', 'html', 'epub'],
         'application/vnd.oasis.opendocument.text' => ['docx', 'pdf', 'rtf', 'txt', 'html', 'epub'],
+        'application/json' => ['yaml', 'xml', 'csv'],
+        'application/x-yaml' => ['json', 'xml'],
+        'application/xml' => ['json', 'yaml', 'csv'],
     ];
 
     public const extGrouped = [
         'Images' => ['jpg', 'jpeg', 'png', 'webp', 'bmp', 'gif', 'tiff', 'svg', 'ico'],
         'Documents' => ['pdf', 'docx', 'rtf', 'odt', 'txt', 'html', 'epub'],
         'Spreadsheets' => ['csv', 'xls', 'xlsx', 'ods'],
+        'Data Formats' => ['json', 'yaml']
     ];
 
     public const PENDING = 'pending';
