@@ -19,7 +19,7 @@ $routes->group('file', function ($routes) {
 });
 
 $routes->get('supported-files', function () {
-    return view('supported-files');
+    return view('supported-files', ['title' => 'Supported File Formats', 'metaTitle' => 'Supported File Types for Conversion']);
 });
 
 // Your mimeTypes array from FileConversion
