@@ -386,6 +386,7 @@ function fileUpload() {
         uploadFromDropbox() {
             Dropbox.choose({
                 success: async (files) => {
+                    console.log(files)
                     // Download the file as a Blob
                     const response = await fetch(files[0].link);
                     const blob = await response.blob();
