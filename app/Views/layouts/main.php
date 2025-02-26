@@ -72,6 +72,8 @@
     <?= $this->include('partials/_alerts') ?>
 
     <?= $this->renderSection('content') ?>
+    <?= $this->include('partials/_footer') ?>
+
 </body>
 
 </html>

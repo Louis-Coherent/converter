@@ -1,4 +1,4 @@
-<div class="bg-gradient-to-r from-blue-400 to-blue-500 text-white p-6 shadow-lg rounded-b-2xl text-center">
+<div class=" bg-blue-400 text-white p-6 text-center">
     <a href="<?= base_url() ?>">
         <h1 class="text-4xl font-extrabold tracking-wide">File Shift</h1>
     </a>
