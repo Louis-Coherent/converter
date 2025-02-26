@@ -388,7 +388,19 @@ function fileUpload() {
                 success: async (files) => {
                     console.log(files)
                     // Download the file as a Blob
-                    const response = await fetch(files[0].link);
+                    const response = await fetch(files[0].link, {
+                        method: 'GET',
+                        mode: 'cors' // Ensure CORS mode is enabled
+                    });
+
+                    // Log all response headers
+                    for (let [key, value] of response.headers.entries()) {
+                        console.log(`${key}: ${value}`);
+                    }
+
+                    // Try getting Content-Type
+                    const contentType = response.headers.get('Content-Type');
+                    console.log("Detected MIME Type:", contentType);
                     const blob = await response.blob();
 
                     // Create a File object from the Blob
