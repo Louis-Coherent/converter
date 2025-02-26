@@ -166,7 +166,7 @@ class File extends Controller
 
         $scanResult = shell_exec(escapeshellarg($clamdPath) . " --no-summary " . escapeshellarg($filePath));
 
-        log_message('error', json_encode($scanResult));
+        log_message('error', $scanResult);
 
         if (strpos($scanResult, 'OK') === false) {
             if (file_exists($filePath)) {
