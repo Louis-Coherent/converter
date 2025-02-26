@@ -162,7 +162,7 @@ class File extends Controller
 
         $filePath = $file->store('files', $fileName);
 
-        $clamdPath = '/usr/bin/clamdscan'; // Faster than clamscan
+        $clamdPath = 'clamdscan'; // Faster than clamscan
 
         $scanResult = shell_exec(escapeshellarg($clamdPath) . " --no-summary " . escapeshellarg($filePath));
 
