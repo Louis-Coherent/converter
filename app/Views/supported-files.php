@@ -40,11 +40,17 @@ use Symfony\Component\Mime\MimeTypes;
 
                     // Loop through file conversion options
                     foreach ($mimeTypes as $mimeType => $extensions) {
+                        $extMain = mimeToExtension($mimeType);
                         echo "<tr class='border border-gray-300'>";
-                        echo "<td class='p-3 border border-gray-300 font-semibold text-blue-700'>" . mimeToExtension($mimeType) . "</td>";
-                        echo "<td class='p-3 border border-gray-300'>" . implode(', ', array_map('strtoupper', $extensions)) . "</td>";
+                        echo "<td class='p-3 border border-gray-300 font-semibold text-blue-700'>" . strtoupper($extMain) . "</td>";
+                        echo "<td class='p-3 border border-gray-300'>" .
+                            implode(', ', array_map(function ($ext) use ($extMain) {
+                                return "<a href='" . strtolower($extMain) . "-to-" . htmlspecialchars($ext) . "' class='text-blue-500 hover:underline'>" . strtoupper($ext) . "</a>";
+                            }, $extensions)) .
+                            "</td>";
                         echo "</tr>";
                     }
+
                     ?>
                 </tbody>
             </table>
