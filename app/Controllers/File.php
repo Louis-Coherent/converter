@@ -118,9 +118,9 @@ class File extends Controller
     public function upload()
     {
 
-        // if ($this->checkUserConversions()) {
-        //     return $this->response->setStatusCode(400)->setJSON(['status' => 'maxedconversions', 'message' => 'You have reached the maximum number of conversions for today.']);
-        // }
+        if ($this->checkUserConversions()) {
+            return $this->response->setStatusCode(400)->setJSON(['status' => 'maxedconversions', 'message' => 'You have reached the maximum number of conversions for today.']);
+        }
 
         $currentFiles = $this->session->get('files');
 
