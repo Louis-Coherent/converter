@@ -29,7 +29,7 @@ class Filters extends BaseFilters
         'toolbar'       => DebugToolbar::class,
         'honeypot'      => Honeypot::class,
         'invalidchars'  => InvalidChars::class,
-        'secureheaders' => SecureHeaders::class,
+        'secureheaders' => \App\Filters\SecureHeaders::class,
         'cors'          => Cors::class,
         'forcehttps'    => ForceHTTPS::class,
         'pagecache'     => PageCache::class,
@@ -55,8 +55,8 @@ class Filters extends BaseFilters
     public array $required = [
         'before' => [
             'forcehttps', // Force Global Secure Requests
-            // 'pagecache',  // Web Page Caching
-            // 'throttler',  // Web Page Caching
+            'secureheaders',  // Web Page Caching
+            'throttler',  // Web Page Caching
         ],
         'after' => [
             'pagecache',   // Web Page Caching
