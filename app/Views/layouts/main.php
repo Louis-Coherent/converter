@@ -23,7 +23,8 @@
     <meta property="og:url" content="https://file-shift.com">
     <meta property="og:type" content="website">
     <link rel="canonical" href="<?= current_url(); ?>" />
-
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1295496956350675"
+        crossorigin="anonymous"></script>
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:title" content="<?= $title ?? '' ?> – File Shift">
     <meta name="twitter:description"
@@ -36,7 +37,13 @@
     <meta name="author" content="File Shift">
 
     <!-- Tailwind CSS -->
-    <link href="<?= base_url('assets/css/styles.css') ?>" rel="stylesheet">
+    <?php if (ENVIRONMENT == 'production'): ?>
+        <link href="<?= base_url('assets/css/style.min.css') ?>" rel="stylesheet">
+    <?php else: ?>
+        <link href="<?= base_url('assets/css/style.css') ?>" rel="stylesheet">
+    <?php endif; ?>
+
+
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
