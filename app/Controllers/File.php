@@ -30,8 +30,8 @@ class File extends Controller
 
         $allowedMimeType = array_keys($this->allowedConversions);
 
-        $title = (!empty($from) ? strtoupper($from) . ' to ' . strtoupper($to) . ' ' : '') . 'File Shift - Fast & Secure File Conversion Platform';
-        $metaTitle = (!empty($from) ? strtoupper($from) . ' to ' . strtoupper($to) . ' ' : '') . 'File Shift - Fast & Secure File Conversion Platform';
+        $title = (!empty($from) ? strtoupper($from) . ' to ' . strtoupper($to) . ' ' : '') . 'Fast & Secure File Conversion Platform';
+        $metaTitle = (!empty($from) ? strtoupper($from) . ' to ' . strtoupper($to) . ' ' : '') . 'Fast & Secure File Conversion Platform';
 
         return view('index', ['files' => $currentFiles, 'allowedMimeType' => $allowedMimeType, 'from' => $from, 'to' => $to, 'title' => $title, 'metaTitle' => $metaTitle]);
     }
