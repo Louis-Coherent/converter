@@ -21,6 +21,9 @@ $routes->group('file', function ($routes) {
 $routes->get('supported-files', function () {
     return view('supported-files', ['title' => 'Supported File Formats', 'metaTitle' => 'Supported File Types for Conversion']);
 });
+$routes->get('guide-to-converting-files', function () {
+    return view('blog/guide-to-conversions', ['title' => 'Supported File Formats', 'metaTitle' => 'Supported File Types for Conversion']);
+});
 
 // Your mimeTypes array from FileConversion
 $mimeTypes = FileConversion::mimeTypes;

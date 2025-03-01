@@ -6,8 +6,7 @@
         </div>
 
         <!-- Navigation Links -->
-        <nav class="flex space-x-6">
-            <!-- <a href="/supported-files" class="hover:text-gray-400">Supported Files</a> -->
+        <nav class="flex flex-col">
         </nav>
 
         <!-- Social Media Links -->
