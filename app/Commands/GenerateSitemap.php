@@ -16,12 +16,7 @@ class GenerateSitemap extends BaseCommand
 
     public function run(array $params = [])
     {
-        $sitemapPath = substr(__DIR__, 0, strpos(__DIR__, 'app')) . 'public/sitemaps';
-
-        // Ensure the directory exists
-        if (!is_dir($sitemapPath)) {
-            mkdir($sitemapPath, 0777, true);
-        }
+        $sitemapPath = substr(__DIR__, 0, strpos(__DIR__, 'app')) . 'public';
 
         $sitemapPath .= '/sitemap.xml';
 
