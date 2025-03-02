@@ -51,7 +51,7 @@ class GenerateSitemap extends BaseCommand
         foreach ($blogs as $blog) {
             $xml->startElement('url');
             $xml->writeElement('loc', $siteUrl . $blog['slug']);
-            $xml->writeElement('lastmod', date($blog['updated_at']));
+            $xml->writeElement('lastmod', date('Y-m-d'));
             $xml->writeElement('priority', '1.0');
             $xml->endElement(); // url
         }
