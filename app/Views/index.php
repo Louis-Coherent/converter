@@ -14,15 +14,15 @@
 <div x-data="fileUpload()" class="max-w-5xl mx-auto mt-16 p-6 bg-white shadow-lg border rounded-lg">
     <h2 class="text-2xl font-semibold mb-4">File Upload & Conversion</h2>
     <?php if (!empty($from) && !empty($to)): ?>
-    <h2 class="text-lg font-light mt-1 opacity-90 my-2">Convert <?= strtoupper($from) ?> to <?= strtoupper($to) ?></h2>
+        <h2 class="text-lg font-light mt-1 opacity-90 my-2">Convert <?= strtoupper($from) ?> to <?= strtoupper($to) ?></h2>
     <?php endif; ?>
 
     <div data-umami-event="{Upload Form}" class=" border border-dashed border-gray-300 p-6 text-center rounded-lg
         cursor-pointer" @click="$refs.fileInput.click()">
         <?php if (!empty($from) && !empty($to)): ?>
-        <p class="text-gray-500">Click to upload <?= strtoupper($from) ?> files or drag & drop</p>
+            <p class="text-gray-500">Click to upload <?= strtoupper($from) ?> files or drag & drop</p>
         <?php else: ?>
-        <p class="text-gray-500">Click to upload files or drag & drop</p>
+            <p class="text-gray-500">Click to upload files or drag & drop</p>
         <?php endif; ?>
         <input type="file" x-ref="fileInput" accept="<?= implode(', ', $allowedMimeType) ?>" @change="handleFileSelect"
             multiple class="hidden" />
@@ -99,7 +99,7 @@
                                 </td>
                                 <td class="p-3">
                                     <span class="font-medium px-2 py-1 rounded-md" :class="{
-                                        'bg-yellow-100 text-yellow-600': file.status === 'pending',
+                                        'bg-yellow-100 text-yellow-600': file.status === 'pending' || file.status === 'uploading',
                                         'bg-blue-100 text-blue-600': file.status === 'uploaded' || file.status === 'queued' || file.status === 'processing',
                                         'bg-green-100 text-green-600': file.status === 'complete',
                                         'bg-red-100 text-red-600': file.status === 'failed'
@@ -108,7 +108,7 @@
                                 </td>
                                 <td class="p-3">
                                     <template
-                                        x-if="file.status !== 'complete' && file.status !== 'failed' && file.status !== 'pending'">
+                                        x-if="file.status !== 'complete' && file.status !== 'failed' && file.status !== 'pending' && file.status !== 'uploading'">
                                         <div class="relative w-full h-4 bg-gray-300 rounded overflow-hidden">
                                             <div class="absolute top-0 left-0 h-full transition-all duration-500 ease-in-out"
                                                 :class="{
@@ -119,7 +119,7 @@
                                         </div>
                                     </template>
 
-                                    <template x-if="file.status === 'pending'">
+                                    <template x-if="file.status === 'pending' || file.status === 'uploading'">
                                         <button data-umami-event="{Single Convert}"
                                             @click="handleSingleFileConvert(file)"
                                             class="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition relative w-32 h-10">
@@ -216,18 +216,18 @@
                         </div>
 
                         <div class="flex justify-between mt-2">
-                            <span class="font-semibold">Status:</span>
                             <span class="font-medium px-2 py-1 rounded-md" :class="{
-                                'bg-yellow-100 text-yellow-600': file.status === 'pending',
-                                'bg-blue-100 text-blue-600': file.status === 'uploaded' ||file.status === 'queued' || file.status === 'processing',
-                                'bg-green-100 text-green-600': file.status === 'complete',
-                                'bg-red-100 text-red-600': file.status === 'failed'
-                            }" x-text="file.status"></span>
+                                        'bg-yellow-100 text-yellow-600': file.status === 'pending' || file.status === 'uploading',
+                                        'bg-blue-100 text-blue-600': file.status === 'uploaded' || file.status === 'queued' || file.status === 'processing',
+                                        'bg-green-100 text-green-600': file.status === 'complete',
+                                        'bg-red-100 text-red-600': file.status === 'failed'
+                                    }" x-text="file.status">
+                            </span>
                         </div>
 
                         <div class="mt-2">
                             <template
-                                x-if="file.status !== 'complete' && file.status !== 'failed' && file.status !== 'pending'">
+                                x-if="file.status !== 'complete' && file.status !== 'failed' && file.status !== 'pending' && file.status !== 'uploading'">
                                 <div class="relative w-full h-4 bg-gray-300 rounded overflow-hidden">
                                     <div class="absolute top-0 left-0 h-full transition-all duration-500 ease-in-out"
                                         :class="{
@@ -238,8 +238,9 @@
                                 </div>
                             </template>
 
-                            <template x-if="file.status === 'pending'">
-                                <button data-umami-event="{Single Convert}" @click="handleSingleFileConvert(file)"
+                            <template x-if="file.status === 'pending' || file.status === 'uploading'">
+                                <button data-umami-event="{Single Convert}"
+                                    @click="handleSingleFileConvert(file)"
                                     class="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition relative w-32 h-10">
                                     <span x-show="!file.isConverting">Convert</span>
                                     <span x-show="file.isConverting"
@@ -247,7 +248,8 @@
                                         <div role="status">
                                             <svg aria-hidden="true"
                                                 class="w-6 h-6 text-gray-200 animate-spin dark:text-white-600 fill-blue-500"
-                                                viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                viewBox="0 0 100 101" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
                                                 <path
                                                     d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
                                                     fill="currentColor" />
@@ -260,6 +262,8 @@
                                     </span>
                                 </button>
                             </template>
+
+
 
                             <template x-if="file.status === 'complete'">
                                 <a data-umami-event="{Single Download}" :href="'/file/download/' + file.id"
@@ -367,227 +371,148 @@
 <?= $this->include('partials/_faq') ?>
 
 <script>
-function fileUpload() {
-    return {
-        selectedFiles: <?= json_encode($files ?? []) ?? [] ?>,
-        pollingInterval: null,
-        isConverting: false, // Track conversion state
+    function fileUpload() {
+        return {
+            selectedFiles: <?= json_encode($files ?? []) ?? [] ?>,
+            pollingInterval: null,
+            isConverting: false, // Track conversion state
 
-        async handleFileSelect(event) {
-            const newFiles = Array.from(event.target.files).map(file => ({
-                file: file,
-                id: null,
-                name: file.name,
-                mimeType: file.type,
-                progress: 0,
-                selectedConversion: null,
-                isConverting: false,
-                errorMessage: '',
-                status: 'pending',
-                allowedConversions: []
-            }));
+            async handleFileSelect(event) {
+                const newFiles = Array.from(event.target.files).map(file => ({
+                    file: file,
+                    id: null,
+                    name: file.name,
+                    mimeType: file.type,
+                    progress: 0,
+                    selectedConversion: null,
+                    isConverting: false,
+                    errorMessage: '',
+                    status: 'pending',
+                    allowedConversions: []
+                }));
 
-            this.selectedFiles = [...this.selectedFiles, ...newFiles]; // Merge new files with the existing ones
-            await this.updateAllowedConversions();
-        },
-        uploadFromDropbox() {
-            Dropbox.choose({
-                success: async (files) => {
-                    const response = await fetch(files[0].link, {
-                        method: 'GET',
-                        mode: 'cors' // Ensure CORS mode is enabled
-                    });
+                this.selectedFiles = [...this.selectedFiles, ...newFiles]; // Merge new files with the existing ones
+                await this.updateAllowedConversions();
+            },
+            uploadFromDropbox() {
+                Dropbox.choose({
+                    success: async (files) => {
+                        const response = await fetch(files[0].link, {
+                            method: 'GET',
+                            mode: 'cors' // Ensure CORS mode is enabled
+                        });
 
-                    const contentType = response.headers.get('Content-Type');
-                    const blob = await response.blob();
+                        const contentType = response.headers.get('Content-Type');
+                        const blob = await response.blob();
 
-                    // Create a File object from the Blob
-                    const file = new File([blob], files[0].name, {
-                        type: blob.type
-                    });
+                        // Create a File object from the Blob
+                        const file = new File([blob], files[0].name, {
+                            type: blob.type
+                        });
 
-                    file.mimeType = contentType
+                        file.mimeType = contentType
 
-                    // Trigger the normal file upload process
-                    this.handleDropboxFile(file);
-                },
-                linkType: "direct",
-                multiselect: false,
-            });
-        },
-
-        async handleDropboxFile(file) {
-            const newFile = {
-                file: file,
-                id: null,
-                name: file.name,
-                mimeType: file.mimeType,
-                progress: 0,
-                selectedConversion: null,
-                isConverting: false,
-                errorMessage: '',
-                status: 'pending',
-                allowedConversions: []
-            };
-
-            // Add the file to the list and update conversions
-            this.selectedFiles = [...this.selectedFiles, newFile];
-            await this.updateAllowedConversions();
-        },
-        truncate(string, n) {
-            return string.substr(0, n - 1) + (string.length > n ? '...' : '');
-        },
-        async updateAllowedConversions() {
-            // Filter files where id is null
-            const mimeTypes = [...new Set(this.selectedFiles.filter(f => f.id === null).map(f => f.mimeType))];
-
-            try {
-                const response = await fetch('/file/allowed-conversions', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
+                        // Trigger the normal file upload process
+                        this.handleDropboxFile(file);
                     },
-                    body: JSON.stringify({
-                        mime_types: mimeTypes
-                    })
+                    linkType: "direct",
+                    multiselect: false,
                 });
+            },
 
-                if (response.ok) {
-                    const data = await response.json();
-                    this.selectedFiles.forEach(file => {
-                        if (file.id === null) {
-                            // Get the allowed conversions for the specific mime type
-                            const conversions = data[file.mimeType] || {};
+            async handleDropboxFile(file) {
+                const newFile = {
+                    file: file,
+                    id: null,
+                    name: file.name,
+                    mimeType: file.mimeType,
+                    progress: 0,
+                    selectedConversion: null,
+                    isConverting: false,
+                    errorMessage: '',
+                    status: 'pending',
+                    allowedConversions: []
+                };
 
-                            file.allowedConversions = Object.keys(conversions).map(groupName => ({
-                                groupName,
-                                extensions: conversions[groupName]
-                            }));
+                // Add the file to the list and update conversions
+                this.selectedFiles = [...this.selectedFiles, newFile];
+                await this.updateAllowedConversions();
+            },
+            truncate(string, n) {
+                return string.substr(0, n - 1) + (string.length > n ? '...' : '');
+            },
+            async updateAllowedConversions() {
+                // Filter files where id is null
+                const mimeTypes = [...new Set(this.selectedFiles.filter(f => f.id === null).map(f => f.mimeType))];
 
-                            // Set default conversion if allowedConversions has any values
-                            if (file.allowedConversions.length > 0) {
-                                // Default to first conversion option
-                                file.selectedConversion = file.allowedConversions[0].extensions[0];
-                            }
-                        }
+                try {
+                    const response = await fetch('/file/allowed-conversions', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            mime_types: mimeTypes
+                        })
                     });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        this.selectedFiles.forEach(file => {
+                            if (file.id === null) {
+                                // Get the allowed conversions for the specific mime type
+                                const conversions = data[file.mimeType] || {};
+
+                                file.allowedConversions = Object.keys(conversions).map(groupName => ({
+                                    groupName,
+                                    extensions: conversions[groupName]
+                                }));
+
+                                // Set default conversion if allowedConversions has any values
+                                if (file.allowedConversions.length > 0) {
+                                    // Default to first conversion option
+                                    file.selectedConversion = file.allowedConversions[0].extensions[0];
+                                }
+                            }
+                        });
+                    }
+                } catch (error) {
+                    showAlert('Error fetching allowed conversions', 'error');
                 }
-            } catch (error) {
-                showAlert('Error fetching allowed conversions', 'error');
-            }
-        },
-        async handleSingleFileConvert(file) {
-            const uploadPromises = await this.uploadFile(file)
-            this.pollStatuses();
-        },
-        async handleBulkFileConvert() {
-            this.isConverting = true;
-            const uploadPromises = this.selectedFiles.map(fileObj => this.uploadFile(fileObj));
-            await Promise.all(uploadPromises);
-            this.isConverting = false;
+            },
+            async handleSingleFileConvert(file) {
+                const uploadPromises = await this.uploadFile(file)
+                this.pollStatuses();
+            },
+            async handleBulkFileConvert() {
+                this.isConverting = true;
+                const uploadPromises = this.selectedFiles.map(fileObj => this.uploadFile(fileObj));
+                await Promise.all(uploadPromises);
+                this.isConverting = false;
 
-            this.pollStatuses();
-        },
-        async handleRemove(file) {
-            this.removeFiles([file])
-        },
-        async removeFiles(files) {
-            // Handle if files is a single file (not an array)
-            if (!Array.isArray(files)) {
-                files = [files];
-            }
-
-            // Remove files with id === null directly from selectedFiles
-            this.selectedFiles = this.selectedFiles.filter(file => !files.some(f => f.id === null && f === file));
-
-            // Filter out files with id === null from the passed files
-            const filesToRemove = files.filter(file => file.id !== null);
-            const fileIds = filesToRemove.map(file => file.id);
-
-            if (fileIds.length === 0) {
-                return; // No files to remove via API, early return
-            }
-
-            const response = await fetch('/file/remove', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    files: fileIds
-                })
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                // Remove files from selectedFiles if their id is found in the response
-                this.selectedFiles = this.selectedFiles.filter(
-                    file => !data.files.some(status => status.id === file.id)
-                );
-
-                showAlert('Files removed successfully', 'success');
-                return;
-            }
-
-            showAlert('Error removing files', 'error');
-        },
-
-        async uploadFile(fileObj) {
-            if (!fileObj.selectedConversion || fileObj.id != null || fileObj.file == null || fileObj.status ==
-                'uploading')
-                return;
-            const formData = new FormData();
-            formData.append('file', fileObj.file);
-            formData.append(
-                'convert_to', fileObj.selectedConversion);
-            fileObj.isConverting = true;
-            fileObj.status = 'uploading'
-
-            try {
-                const response = await fetch('/file/upload', {
-                    method: 'POST',
-                    body: formData
-                });
-                if (response.ok) {
-                    const data = await response.json();
-                    fileObj.id = data.unique_id;
-                    fileObj.status = 'uploaded';
-                    fileObj.progress = 10;
-                    fileObj.isConverting = false;
-
-                    showAlert('File uploaded successfully', 'success');
-
-                } else {
-                    const data = await response.json();
-
-                    showAlert(data.message, 'error');
-
-                    fileObj.file = null
-                    fileObj.status = 'failed';
+                this.pollStatuses();
+            },
+            async handleRemove(file) {
+                this.removeFiles([file])
+            },
+            async removeFiles(files) {
+                // Handle if files is a single file (not an array)
+                if (!Array.isArray(files)) {
+                    files = [files];
                 }
-            } catch (error) {
-                showAlert('Error during upload', 'error');
-                fileObj.errorMessage = 'Error during upload';
-                fileObj.status = 'error';
-            }
-        },
-        async pollStatuses() {
-            if (!this.pollingInterval) {
-                this.pollingInterval = setInterval(() => this.getFileStatus(), 2000);
-            }
-        },
-        async getFileStatus() {
-            const fileIds = this.selectedFiles
-                .filter(file => file.id && file.status !== "complete" && file.status !== "failed")
-                .map(file => file.id);
-            if (fileIds.length === 0) {
-                clearInterval(this.pollingInterval);
-                this.pollingInterval = null;
-                return;
-            }
-            try {
-                const response = await fetch('/file/status', {
+
+                // Remove files with id === null directly from selectedFiles
+                this.selectedFiles = this.selectedFiles.filter(file => !files.some(f => f.id === null && f === file));
+
+                // Filter out files with id === null from the passed files
+                const filesToRemove = files.filter(file => file.id !== null);
+                const fileIds = filesToRemove.map(file => file.id);
+
+                if (fileIds.length === 0) {
+                    return; // No files to remove via API, early return
+                }
+
+                const response = await fetch('/file/remove', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -596,33 +521,112 @@ function fileUpload() {
                         files: fileIds
                     })
                 });
+
+                const data = await response.json();
+
                 if (response.ok) {
-                    const data = await response.json();
-                    data.forEach(statusObj => {
-                        const file = this.selectedFiles.find(f => f.id === statusObj.id);
-                        if (file) {
-                            file.status = statusObj.status;
-                            file.progress = statusObj.progress;
-                        }
+                    // Remove files from selectedFiles if their id is found in the response
+                    this.selectedFiles = this.selectedFiles.filter(
+                        file => !data.files.some(status => status.id === file.id)
+                    );
+
+                    showAlert('Files removed successfully', 'success');
+                    return;
+                }
+
+                showAlert('Error removing files', 'error');
+            },
+
+            async uploadFile(fileObj) {
+                if (!fileObj.selectedConversion || fileObj.id != null || fileObj.file == null || fileObj.status ==
+                    'uploading')
+                    return;
+                const formData = new FormData();
+                formData.append('file', fileObj.file);
+                formData.append(
+                    'convert_to', fileObj.selectedConversion);
+                fileObj.isConverting = true;
+                fileObj.status = 'uploading'
+
+                try {
+                    const response = await fetch('/file/upload', {
+                        method: 'POST',
+                        body: formData
                     });
-                    if (this.selectedFiles.every(file => file.status === 'completed' || file.status ===
-                            'error')) {
+                    if (response.ok) {
+                        const data = await response.json();
+                        fileObj.id = data.unique_id;
+                        fileObj.status = 'uploaded';
+                        fileObj.progress = 10;
+                        fileObj.isConverting = false;
+
+                        showAlert('File uploaded successfully', 'success');
+
+                    } else {
+                        const data = await response.json();
+
+                        showAlert(data.message, 'error');
+
+                        fileObj.file = null
+                        fileObj.status = 'failed';
+                    }
+                } catch (error) {
+                    showAlert('Error during upload', 'error');
+                    fileObj.errorMessage = 'Error during upload';
+                    fileObj.status = 'error';
+                }
+            },
+            async pollStatuses() {
+                if (!this.pollingInterval) {
+                    this.pollingInterval = setInterval(() => this.getFileStatus(), 2000);
+                }
+            },
+            async getFileStatus() {
+                const fileIds = this.selectedFiles
+                    .filter(file => file.id && file.status !== "complete" && file.status !== "failed")
+                    .map(file => file.id);
+                if (fileIds.length === 0) {
+                    clearInterval(this.pollingInterval);
+                    this.pollingInterval = null;
+                    return;
+                }
+                try {
+                    const response = await fetch('/file/status', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            files: fileIds
+                        })
+                    });
+                    if (response.ok) {
+                        const data = await response.json();
+                        data.forEach(statusObj => {
+                            const file = this.selectedFiles.find(f => f.id === statusObj.id);
+                            if (file) {
+                                file.status = statusObj.status;
+                                file.progress = statusObj.progress;
+                            }
+                        });
+                        if (this.selectedFiles.every(file => file.status === 'completed' || file.status ===
+                                'error')) {
+                            clearInterval(this.pollingInterval);
+                            this.pollingInterval = null;
+                        }
+                    } else {
                         clearInterval(this.pollingInterval);
                         this.pollingInterval = null;
                     }
-                } else {
-                    clearInterval(this.pollingInterval);
-                    this.pollingInterval = null;
+                } catch (error) {
+                    console.error('Error fetching status:', error);
                 }
-            } catch (error) {
-                console.error('Error fetching status:', error);
+            },
+            init() {
+                this.pollStatuses();
             }
-        },
-        init() {
-            this.pollStatuses();
-        }
-    };
-}
+        };
+    }
 </script>
 
 <?= $this->endSection('content') ?>
