@@ -11,8 +11,7 @@ class VideoConverter implements ConverterInterface
         return [
             'video/mp4'  => ['avi', 'mkv', 'mov', 'flv', 'webm'],
             'video/avi'  => ['mp4', 'mkv', 'mov', 'flv', 'webm'],
-            'video/mkv'  => ['mp4', 'avi', 'mov', 'flv', 'webm'],
-            'video/mov'  => ['mp4', 'avi', 'mkv', 'flv', 'webm'],
+            'video/quicktime'  => ['mp4', 'avi', 'mkv', 'flv', 'webm'],
             'video/flv'  => ['mp4', 'avi', 'mkv', 'mov', 'webm'],
             'video/webm' => ['mp4', 'avi', 'mkv', 'mov', 'flv']
         ];

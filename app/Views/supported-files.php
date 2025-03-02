@@ -35,7 +35,11 @@ use Symfony\Component\Mime\MimeTypes;
                     function mimeToExtension($mimeType)
                     {
                         $mimeTypes = new MimeTypes();
-                        return strtoupper($mimeTypes->getExtensions($mimeType)[0]) ?? '';
+                        try {
+                            return strtoupper($mimeTypes->getExtensions($mimeType)[0]) ?? '';
+                        } catch (\Exception $e) {
+                            dd($mimeType);
+                        }
                     }
 
                     // Loop through file conversion options
