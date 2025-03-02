@@ -33,9 +33,15 @@ Events::on('pre_system', static function (): void {
             ob_end_flush();
         }
 
-        ob_start(static fn ($buffer) => $buffer);
+        ob_start(static fn($buffer) => $buffer);
     }
-
+    Events::on('post_controller_constructor', function () {
+        \Sentry\init([
+            'dsn' => 'https://b871dbb281e5e61df415794b5b736222@o4508909218234368.ingest.de.sentry.io/4508909219938384',
+            // Specify a fixed sample rate
+            'traces_sample_rate' => 1.0,
+        ]);
+    });
     /*
      * --------------------------------------------------------------------
      * Debug Toolbar Listeners.
