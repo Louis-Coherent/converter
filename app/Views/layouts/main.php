@@ -61,21 +61,26 @@
     <script type="application/ld+json">
         {
             "@context": "https://schema.org",
-            "@type": "WebSite",
-            "name": "File Shift",
-            "url": "https://file-shift.com",
-            "description": "Convert your files easily with our online converter. Supports various formats with secure processing.",
-            "publisher": {
+            "@type": "Service",
+            "name": "Online File Converter",
+            "description": "Convert documents, audio, video, and images into different formats online.",
+            "provider": {
                 "@type": "Organization",
                 "name": "File Shift",
-                "logo": {
-                    "@type": "ImageObject",
-                    "url": "<?= base_url('file-shift-logo.png') ?>"
-
-                }
+                "url": "https://file-shift.com"
+            },
+            "areaServed": {
+                "@type": "Country",
+                "name": "Worldwide"
+            },
+            "serviceType": "File Conversion",
+            "availableChannel": {
+                "@type": "Website",
+                "url": "https://file-shift.com/converter"
             }
         }
     </script>
+
     <?= $this->include('partials/_topbar') ?>
     <?= $this->include('partials/_alerts') ?>
 

@@ -8,6 +8,8 @@ use App\Libraries\Converters\ImagickConverter;
 use App\Libraries\Converters\SpreadsheetConverter;
 use App\Libraries\Converters\WordConverter;
 use App\Libraries\Converters\DataFormatConverter;
+use App\Libraries\Converters\AudioConverter;
+use App\Libraries\Converters\VideoConverter;
 use Exception;
 
 class ConverterRegistry
@@ -19,6 +21,8 @@ class ConverterRegistry
         SpreadsheetConverter::class,
         WordConverter::class,
         DataFormatConverter::class,
+        AudioConverter::class,
+        VideoConverter::class
     ];
 
     public static function getConverter(string $from, string $to)

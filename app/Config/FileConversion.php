@@ -36,12 +36,27 @@ class FileConversion extends Config
         'application/json' => ['yaml', 'xml', 'csv'],
         'application/x-yaml' => ['json', 'xml'],
         'application/xml' => ['json', 'yaml', 'csv'],
+        'video/mp4'  => ['avi', 'mkv', 'mov', 'flv', 'webm'],
+        'video/avi'  => ['mp4', 'mkv', 'mov', 'flv', 'webm'],
+        'video/mkv'  => ['mp4', 'avi', 'mov', 'flv', 'webm'],
+        'video/mov'  => ['mp4', 'avi', 'mkv', 'flv', 'webm'],
+        'video/flv'  => ['mp4', 'avi', 'mkv', 'mov', 'webm'],
+        'video/webm' => ['mp4', 'avi', 'mkv', 'mov', 'flv'],
+        'audio/wav'  => ['mp3', 'ogg', 'flac', 'aac', 'm4a'],
+        'audio/x-wav'  => ['mp3', 'ogg', 'flac', 'aac', 'm4a'],
+        'audio/mp3'  => ['wav', 'ogg', 'flac', 'aac', 'm4a'],
+        'audio/ogg'  => ['mp3', 'wav', 'flac', 'aac', 'm4a'],
+        'audio/flac' => ['mp3', 'wav', 'ogg', 'aac', 'm4a'],
+        'audio/aac'  => ['mp3', 'wav', 'ogg', 'flac', 'm4a'],
+        'audio/m4a'  => ['mp3', 'wav', 'ogg', 'flac', 'aac'],
     ];
 
     public const extGrouped = [
         'Images' => ['jpg', 'jpeg', 'png', 'webp', 'bmp', 'gif', 'tiff', 'svg', 'ico'],
         'Documents' => ['pdf', 'docx', 'rtf', 'odt', 'txt', 'html', 'epub'],
         'Spreadsheets' => ['csv', 'xls', 'xlsx', 'ods'],
+        'Video' => ['avi', 'mkv', 'mov', 'flv', 'webm', 'mp4'],
+        'Audio' => ['mp3', 'wav', 'ogg', 'flac', 'aac', 'm4a'],
         'Data Formats' => ['json', 'yaml']
     ];
 

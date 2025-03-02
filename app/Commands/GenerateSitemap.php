@@ -16,6 +16,10 @@ class GenerateSitemap extends BaseCommand
 
     public function run(array $params = [])
     {
+
+        $routes = service('routes');
+        dd($routes);
+
         $sitemapPath = substr(__DIR__, 0, strpos(__DIR__, 'app')) . 'public';
 
         $sitemapPath .= '/sitemap.xml';
@@ -32,6 +36,12 @@ class GenerateSitemap extends BaseCommand
         // Add the homepage or root URL
         $xml->startElement('url');
         $xml->writeElement('loc', $siteUrl);
+        $xml->writeElement('lastmod', date('Y-m-d'));
+        $xml->writeElement('priority', '1.0');
+        $xml->endElement(); // url
+
+        $xml->startElement('url');
+        $xml->writeElement('loc', $siteUrl . 'supported-files');
         $xml->writeElement('lastmod', date('Y-m-d'));
         $xml->writeElement('priority', '1.0');
         $xml->endElement(); // url
