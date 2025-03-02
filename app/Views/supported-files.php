@@ -1,7 +1,6 @@
 <?php
 
 use Config\FileConversion;
-use Symfony\Component\Mime\MimeTypes;
 
 ?>
 <?= $this->extend('layouts/main') ?>
@@ -18,46 +17,38 @@ use Symfony\Component\Mime\MimeTypes;
                 Convert Now
             </a>
         </div>
+
         <div class="mt-6">
-            <table class="w-full border-collapse rounded-lg border border-gray-300 text-left">
-                <thead class="bg-blue-400 text-white">
-                    <tr>
-                        <th class="p-3 border border-gray-300">Input Format</th>
-                        <th class="p-3 border border-gray-300">Convert To</th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white text-gray-800">
-                    <?php
-                    // File conversion config
-                    $mimeTypes = FileConversion::mimeTypes;
+            <?php $extGrouped = FileConversion::extGrouped; ?>
 
-                    // Function to convert MIME type to extension
-                    function mimeToExtension($mimeType)
-                    {
-                        $mimeTypes = new MimeTypes();
-                        try {
-                            return strtoupper($mimeTypes->getExtensions($mimeType)[0]) ?? '';
-                        } catch (\Exception $e) {
-                            dd($mimeType);
-                        }
-                    }
-
-                    // Loop through file conversion options
-                    foreach ($mimeTypes as $mimeType => $extensions) {
-                        $extMain = mimeToExtension($mimeType);
-                        echo "<tr class='border border-gray-300'>";
-                        echo "<td class='p-3 border border-gray-300 font-semibold text-blue-700'>" . strtoupper($extMain) . "</td>";
-                        echo "<td class='p-3 border border-gray-300'>" .
-                            implode(', ', array_map(function ($ext) use ($extMain) {
-                                return "<a href='" . strtolower($extMain) . "-to-" . htmlspecialchars($ext) . "' class='text-blue-500 hover:underline'>" . strtoupper($ext) . "</a>";
-                            }, $extensions)) .
-                            "</td>";
-                        echo "</tr>";
-                    }
-
-                    ?>
-                </tbody>
-            </table>
+            <?php foreach ($extGrouped as $category => $extensions): ?>
+                <div class="mt-6">
+                    <h3 class="text-xl font-semibold text-gray-700 border-b pb-2"> <?= htmlspecialchars($category) ?> </h3>
+                    <table class="w-full border-collapse border border-gray-300 text-left mt-3">
+                        <thead class="bg-blue-400 text-white">
+                            <tr>
+                                <th class="p-3 border border-gray-300">Input Format</th>
+                                <th class="p-3 border border-gray-300">Convert To</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white text-gray-800">
+                            <?php foreach ($extensions as $extMain): ?>
+                                <tr class="border border-gray-300">
+                                    <td class="p-3 border border-gray-300 font-semibold text-blue-700"> <?= strtoupper($extMain) ?> </td>
+                                    <td class="p-3 border border-gray-300">
+                                        <?php
+                                        $convertibleFormats = array_diff($extensions, [$extMain]);
+                                        echo implode(', ', array_map(function ($ext) use ($extMain) {
+                                            return "<a href='" . strtolower($extMain) . "-to-" . htmlspecialchars($ext) . "' class='text-blue-500 hover:underline'>" . strtoupper($ext) . "</a>";
+                                        }, $convertibleFormats));
+                                        ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            <?php endforeach; ?>
         </div>
 
         <!-- Convert Now Button -->
@@ -67,7 +58,6 @@ use Symfony\Component\Mime\MimeTypes;
                 Convert Now
             </a>
         </div>
-
     </div>
 </div>
 
