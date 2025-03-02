@@ -9,7 +9,7 @@
         <nav class="hidden md:flex space-x-6">
             <a href="<?= base_url('/') ?>" class="hover:underline">Convert</a>
             <a href="<?= base_url('/supported-files') ?>" class="hover:underline">Conversions</a>
-            <a href="<?= base_url('/guide-to-converting-files') ?>" class="hover:underline">Guide</a>
+            <a href="<?= base_url('/blog') ?>" class="hover:underline">Blog</a>
         </nav>
 
         <!-- Mobile Menu Button (Visible only on small screens) -->
@@ -24,7 +24,7 @@
     <div x-show="open" class="md:hidden bg-blue-500 p-4 mt-2 rounded-lg">
         <a href="<?= base_url('/') ?>" class="block py-2 hover:underline">Convert</a>
         <a href="<?= base_url('/supported-files') ?>" class="block py-2 hover:underline">Conversions</a>
-        <a href="<?= base_url('/guide-to-converting-files') ?>" class="block py-2 hover:underline">Guide</a>
+        <a href="<?= base_url('/blog') ?>" class="block py-2 hover:underline">Blog</a>
     </div>
 
     <!-- Subtitle -->

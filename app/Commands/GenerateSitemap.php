@@ -2,6 +2,8 @@
 
 namespace App\Commands;
 
+use App\Controllers\Blog;
+use App\Models\BlogModel;
 use CodeIgniter\CLI\CLI;
 use Config\FileConversion;
 use CodeIgniter\CLI\BaseCommand;
@@ -16,10 +18,6 @@ class GenerateSitemap extends BaseCommand
 
     public function run(array $params = [])
     {
-
-        $routes = service('routes');
-        dd($routes);
-
         $sitemapPath = substr(__DIR__, 0, strpos(__DIR__, 'app')) . 'public';
 
         $sitemapPath .= '/sitemap.xml';
@@ -46,11 +44,17 @@ class GenerateSitemap extends BaseCommand
         $xml->writeElement('priority', '1.0');
         $xml->endElement(); // url
 
-        $xml->startElement('url');
-        $xml->writeElement('loc', $siteUrl . 'supported-files');
-        $xml->writeElement('lastmod', date('Y-m-d'));
-        $xml->writeElement('priority', '1.0');
-        $xml->endElement(); // url
+        $blogPosts = new BlogModel();
+
+        $blogs = $blogPosts->orderBy('created_at', 'DESC')->findAll();
+
+        foreach ($blogs as $blog) {
+            $xml->startElement('url');
+            $xml->writeElement('loc', $siteUrl . $blog['slug']);
+            $xml->writeElement('lastmod', date($blog['updated_at']));
+            $xml->writeElement('priority', '1.0');
+            $xml->endElement(); // url
+        }
 
         // Get the mimeTypes from your FileConversion class
         $mimeTypes = FileConversion::mimeTypes;

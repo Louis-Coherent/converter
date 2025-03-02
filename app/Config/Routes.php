@@ -18,6 +18,9 @@ $routes->group('file', function ($routes) {
     $routes->get('download-zip', 'File::downloadMultiple', ['filter' => 'noindex']);
 });
 
+$routes->get('blog', 'Blog::index');
+$routes->get('blog/(:any)', 'Blog::view/$1');
+
 $routes->get('supported-files', function () {
     return view('supported-files', ['title' => 'Supported File Formats', 'metaTitle' => 'Supported File Types for Conversion']);
 });
