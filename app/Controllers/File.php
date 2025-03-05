@@ -165,19 +165,6 @@ class File extends Controller
 
         $filePath = $file->store('files', $fileName);
 
-
-        if (ENVIRONMENT == 'production') {
-            $scanResult = shell_exec(escapeshellarg('clamdscan') . " --no-summary " . escapeshellarg(WRITEPATH . 'uploads/' . $filePath));
-
-            if (strpos($scanResult, 'OK') === false) {
-                if (file_exists($filePath)) {
-                    unlink($filePath);
-                }
-                return $this->response->setJSON(['status' => 'error', 'message' => 'Malicious file detected.'])->setStatusCode(400);
-            }
-        }
-
-
         $uuid = service('uuid');
         $uuid4 = $uuid->uuid4()->toString();
 
