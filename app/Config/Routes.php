@@ -7,7 +7,18 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
+service('auth')->routes($routes);
+
+
+$routes->post('logout', 'User::logout');
+
 $routes->get('/', 'File::index');
+
+$routes->get('pricing', 'Payment::index');
+$routes->get('payment/checkout', 'Payment::checkout');
+$routes->get('payment/success', 'Payment::success');
+$routes->get('payment/cancel', 'Payment::cancel');
+
 
 $routes->group('file', function ($routes) {
     $routes->post('allowed-conversions', 'File::allowedConversions', ['filter' => 'noindex']);

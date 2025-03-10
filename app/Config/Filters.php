@@ -37,6 +37,7 @@ class Filters extends BaseFilters
         'ajax'          => \App\Filters\AjaxFilter::class,
         'throttler'     => \App\Filters\IPThrottler::class,
         'noindex'       => \App\Filters\NoIndex::class,
+        'session'     => \CodeIgniter\Shield\Filters\SessionAuth::class,
     ];
 
     /**
@@ -96,7 +97,13 @@ class Filters extends BaseFilters
      *
      * @var array<string, list<string>>
      */
-    public array $methods = [];
+    public array $methods = [
+        'session' => [
+            'before' => [
+                'payment/*'
+            ]
+        ]
+    ];
 
     /**
      * List of filter aliases that should run on any

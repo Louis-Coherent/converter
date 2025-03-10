@@ -204,6 +204,11 @@ class File extends Controller
 
     private function checkUserConversions()
     {
+
+        if (auth()->loggedIn() && auth()->user()->toRawArray()['is_premium'] == 1) {
+            return false;
+        }
+
         $ipAddress = $this->request->getIPAddress();
         $fileModel = new FileModel();
 
