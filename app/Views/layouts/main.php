@@ -38,7 +38,7 @@
 
     <!-- Tailwind CSS -->
     <?php if (ENVIRONMENT == 'production'): ?>
-        <link href="<?= base_url('assets/css/style.min.css') ?>" rel="stylesheet">
+        <link href="<?= base_url('assets/css/style.css') ?>" rel="stylesheet">
     <?php else: ?>
         <link href="<?= base_url('assets/css/style.css') ?>" rel="stylesheet">
     <?php endif; ?>
