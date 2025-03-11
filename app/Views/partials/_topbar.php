@@ -49,7 +49,7 @@
 
         <!-- Mobile Menu Button (Visible only on small screens) -->
         <button @click="open = !open" class="md:hidden focus:outline-none">
-            <i class="bi bi-list text-2xl"></i>
+            <i class="fa-solid fa-bars"></i>
         </button>
     </div>
 
