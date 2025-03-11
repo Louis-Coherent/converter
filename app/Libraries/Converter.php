@@ -10,7 +10,7 @@ class Converter
     public function convert(string $from, string $to, string $filePath)
     {
         if (ENVIRONMENT == 'production') {
-            $scanResult = shell_exec(escapeshellarg('clamscan') . " --no-summary " . escapeshellarg(WRITEPATH . 'uploads/' . $filePath));
+            $scanResult = shell_exec(escapeshellarg('clamdscan') . " --no-summary " . escapeshellarg(WRITEPATH . 'uploads/' . $filePath));
 
             if (strpos($scanResult, 'OK') === false) {
                 if (file_exists($filePath)) {
