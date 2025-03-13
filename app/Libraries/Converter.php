@@ -12,6 +12,8 @@ class Converter
         if (ENVIRONMENT == 'production') {
             $scanResult = shell_exec(escapeshellarg('clamdscan') . " --no-summary " . escapeshellarg(WRITEPATH . 'uploads/' . $filePath));
 
+            log_message('info', $scanResult);
+
             if (strpos($scanResult, 'OK') === false) {
                 if (file_exists($filePath)) {
                     unlink($filePath);
