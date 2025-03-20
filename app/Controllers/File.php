@@ -118,6 +118,7 @@ class File extends Controller
     public function upload()
     {
 
+        log_message('info', 'Upload request received.');
         if (ENVIRONMENT == 'production') {
             if ($this->checkUserConversions()) {
                 return $this->response->setStatusCode(400)->setJSON(['status' => 'maxedconversions', 'message' => 'You have reached the maximum number of conversions for today.']);
@@ -198,6 +199,8 @@ class File extends Controller
         ];
 
         $this->session->set('files', $currentFiles);
+
+        log_message('info', 'File uploaded successfully. File ID: ' . $uuid4);
 
         return $this->response->setJSON(['status' => 'success', 'message' => 'File uploaded successfully!', 'unique_id' => $uuid4]);
     }
