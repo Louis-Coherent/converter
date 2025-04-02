@@ -9,7 +9,7 @@ use CodeIgniter\I18n\Time;
 
 <div class="max-w-4xl mx-auto mt-8 px-4">
     <div class="bg-white shadow-lg border rounded-xl p-6">
-        <h2 class="text-2xl font-semibold text-center text-blue-600">Blog Posts</h2>
+        <h1 class="text-2xl font-semibold text-center text-blue-600">Blog Posts</h1>
         <p class="text-gray-600 text-center mt-2">Read the latest updates and articles.</p>
 
         <div class="mt-6 space-y-6">
