@@ -19,6 +19,11 @@ $routes->get('payment/checkout', 'Payment::checkout');
 $routes->get('payment/success', 'Payment::success');
 $routes->get('payment/cancel', 'Payment::cancel');
 
+$routes->set404Override(function () {
+    echo view('errors/html/error_404');
+});
+
+
 
 $routes->group('file', function ($routes) {
     $routes->post('allowed-conversions', 'File::allowedConversions', ['filter' => 'noindex']);
