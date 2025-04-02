@@ -17,8 +17,6 @@ $sitePath = current_url(true)->getRoutePath();
     <meta name="title" content="<?= ($metaTitle) ?? '' ?> | File Shift">
     <meta name="description"
         content="File Shift is a fast and secure online platform that helps you convert your files between different formats with ease. Start converting today!">
-    <meta name="keywords"
-        content="file conversion, convert files, online file converter, pdf to word, image to pdf, audio conversion, video converter">
     <link rel="icon" href="<?= base_url('file-shift.ico') ?>">
     <script defer src="https://cloud.umami.is/script.js" data-website-id="caba49ba-759b-4f5b-8baf-0963c1917845">
     </script>
