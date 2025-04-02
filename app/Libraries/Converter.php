@@ -13,6 +13,9 @@ class Converter
             $scanResult = shell_exec(escapeshellarg('clamscan') . " --no-summary " . escapeshellarg(WRITEPATH . 'uploads/' . $filePath));
 
             if (strpos($scanResult, 'OK') === false) {
+
+                \Sentry\captureMessage($scanResult);
+
                 if (file_exists($filePath)) {
                     unlink($filePath);
                 }
