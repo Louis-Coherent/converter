@@ -4,7 +4,7 @@
 
 <div class="flex justify-center items-center min-h-screen bg-gray-100 px-4">
     <div class="w-full max-w-md bg-white shadow-lg rounded-2xl p-6">
-        <h2 class="text-2xl font-semibold text-gray-700 text-center mb-4"> <?= lang('Auth.register') ?> </h2>
+        <h1 class="text-2xl font-semibold text-gray-700 text-center mb-4"> <?= lang('Auth.register') ?> </h1>
 
         <?php if (session('error') !== null) : ?>
             <div class="bg-red-100 text-red-700 p-3 rounded mb-4 text-sm"> <?= session('error') ?> </div>

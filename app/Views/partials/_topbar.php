@@ -2,7 +2,7 @@
     <div class="max-w-7xl mx-auto flex items-center justify-between">
         <!-- Logo and Site Name -->
         <a href="<?= base_url() ?>" class="flex items-center space-x-2">
-            <h1 class="text-3xl font-extrabold tracking-wide">File Shift</h1>
+            <div class="text-3xl font-extrabold tracking-wide">File Shift</div>
         </a>
 
         <!-- Desktop Navigation (Visible on medium screens and larger) -->
@@ -12,8 +12,8 @@
             <a href="<?= base_url('/blog') ?>" class="hover:underline">Blog</a>
 
             <!-- Premium Notice -->
-            <?php if (!auth()->user() || auth()->user()->toRawArray()['is_premium'] == 0) : ?>
-                <a href="<?= url_to('pricing') ?>" class="bg-yellow-400 text-black px-4 py-2 rounded-lg shadow-md hover:bg-yellow-500 font-semibold">
+            <?php if (!auth()->user() || $premium = auth()->user()->toRawArray()['is_premium'] == 0) : ?>
+                <a href="<?= !auth()->user() ? url_to('register') : url_to('pricing') ?>" class="bg-yellow-400 text-black px-4 py-2 rounded-lg shadow-md hover:bg-yellow-500 font-semibold">
                     🚀 Upgrade to Unlimited
                 </a>
             <?php endif; ?>

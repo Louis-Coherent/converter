@@ -10,7 +10,7 @@ use Symfony\Component\Mime\MimeTypes;
 
 <div class="max-w-4xl mx-auto mt-8 px-4">
     <div class="bg-white shadow-lg border rounded-xl p-6">
-        <h2 class="text-2xl font-semibold text-center text-blue-600">Supported Conversions</h2>
+        <h1 class="text-2xl font-semibold text-center text-blue-600">Supported Conversions</h1>
         <p class="text-gray-600 text-center mt-2">Easily convert files between these formats.</p>
         <div class="text-center mt-6">
             <a data-umami-event="{Convert Button}" href="<?= base_url('/') ?>"

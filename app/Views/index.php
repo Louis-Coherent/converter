@@ -12,9 +12,9 @@
 
 
 <section x-data="fileUpload()" id="convert" class="max-w-5xl mx-auto mt-16 p-6 bg-white shadow-lg border rounded-lg">
-    <h2 class="text-3xl font-bold mb-8 text-gray-900">
+    <h1 class="text-3xl font-bold mb-8 text-gray-900">
         File <span class="text-blue-600">Upload</span> & <span class="text-blue-600">Convert</span>
-    </h2>
+    </h1>
     <?php if (!empty($from) && !empty($to)): ?>
         <h2 class="text-lg font-light mt-1 opacity-90 my-2">Convert <?= strtoupper($from) ?> to <?= strtoupper($to) ?></h2>
     <?php endif; ?>

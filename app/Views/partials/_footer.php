@@ -1,4 +1,4 @@
-<footer class="bg-blue-400 text-white py-6 mt-6">
+<footer class="bg-blue-600 text-white py-6 mt-6">
     <div class="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
         <!-- Logo and Branding -->
         <div class="mb-4 md:mb-0">
